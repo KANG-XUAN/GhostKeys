@@ -1,0 +1,14 @@
+src/
+│
+├── components/
+│   ├── TypingBox.vue        # 核心打字輸入區
+│   ├── LanguageSelector.vue # 語言切換按鈕（中 / 英）
+│   ├── TypingStats.vue      # 顯示統計資訊（速度、正確率等）
+│   ├── Timer.vue            # 計時器（選用）
+│   └── SentenceProvider.vue # 提供練習句子（中/英隨語言切換）
+│
+├── views/
+│   └── Home.vue             # 主畫面（組合各個元件）
+│
+├── App.vue                  # 應用主殼
+└── main.js                  # 程式進入點
