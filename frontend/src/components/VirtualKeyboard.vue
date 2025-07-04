@@ -1,5 +1,5 @@
 <template>
-	<div class="virtual-keyboard mt-3">
+	<div class="virtual-keyboard">
 		<div class="keyboard-row">
 			<div v-for="key in row1" :key="key"
 				:class="['key', wideKeys[key] || '', fingerMap[key], { active: isActive(key) }]">

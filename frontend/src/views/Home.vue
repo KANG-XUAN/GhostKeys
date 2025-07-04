@@ -7,21 +7,28 @@
 		</div>
 
 		<div class="container">
-			<InfoSelectArea @load-content="handleContentLoad" :text="sentence" />
-			<InfoArea :start="isTyping" :errorCount="currentErrorCount" :inputCount="currentInputCount" />
+			<InfoSettingArea @load-content="handleContentLoad" :text="sentence" />
+			<FloatInfoArea :errorCount="currentErrorCount" :inputCount="currentInputCount" />
 
-			<InputArea :rawText="selectedText" @typing-start="onTypingStart" @update-error-count="updateErrorCount"
+			<InputArea :rawText="selectedText" @update-error-count="updateErrorCount"
 				@update-input-count="updateInputCount" />
+		</div>
+
+		<div class="container-fluid">
+			<div class="row">
+				<FooterArea />
+			</div>
 		</div>
 	</div>
 </template>
 
 <script setup>
 import { ref, watch } from 'vue'
-import HeaderNavArea from '@/components/HeaderNavArea.vue'
-import InfoArea from '@/components/InfoArea.vue'
-import InfoSelectArea from '@/components/InfoSelectArea.vue'
-import InputArea from '@/components/InputArea.vue'
+import HeaderNavArea from '@/components/common/HeaderNavArea.vue'
+import FooterArea from '@/components/common/FooterArea.vue'
+import FloatInfoArea from '@/components/FloatInfoArea.vue'
+import InfoSettingArea from '@/components/info/InfoSettingArea.vue'
+import InputArea from '@/components/typing/InputArea.vue'
 
 const language = ref('en')
 const sentence = ref('')
@@ -32,20 +39,23 @@ const setLanguage = (lang) => {
 }
 
 
+import { useRandomTextExportStore } from '@/stores/randomTextExportStore.js'
+import { watchEffect } from 'vue'
+const exportStore = useRandomTextExportStore()
+// 當 pinia store 的文章更新時，selectedText 也同步更新
+watchEffect(() => {
+  if (exportStore.confirmedText) {
+    selectedText.value = exportStore.confirmedText
+  }
+})
+
+
 // 將檔案內容丟入練習區
 const selectedText = ref('')
 const handleContentLoad = (text) => {
 	selectedText.value = text
 }
 
-// info資訊區
-const isTyping = ref(false)
-// 在打字區觸發時改為 true
-const onTypingStart = () => {
-	if (!isTyping.value) {
-		isTyping.value = true
-	}
-}
 
 
 // 錯誤與輸入字數

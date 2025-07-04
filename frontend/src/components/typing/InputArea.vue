@@ -1,28 +1,40 @@
-<!-- InputArea.vue -->
-
 <template>
 	<div class="input-area">
+		<!-- 沒有文章 -->
 		<div v-if="!fullwidthLines.length" class="text-white">請先選擇一篇文章</div>
 
-		<div v-for="(line, index) in fullwidthLines" :key="index" class="line-group">
-			<!-- 上方全形文字展示（錯字紅色） -->
-			<div class="text-line">
-				<span v-for="(char, i) in line" :key="i"
-					:class="{ wrong: inputLines[index]?.[i] && inputLines[index][i] !== char }">
-					{{ char }}
-				</span>
-			</div>
+		<!-- 輸入區：只有在未完成時顯示 -->
+		<div v-else-if="!typingStore.isFinished">
+			<div v-for="(line, index) in fullwidthLines" :key="index" class="line-group">
+				<div class="text-line">
+					<span v-for="(char, i) in line" :key="i"
+						:class="{ wrong: inputLines[index]?.[i] && inputLines[index][i] !== char }">
+						{{ char }}
+					</span>
+				</div>
 
-			<!-- 下方輸入框，自動轉全形字，Enter 換行 -->
-			<input ref="inputRefs" class="line-input w-100" type="text" v-model="inputLines[index]"
-				@input="handleInput(index)" @keydown.enter.prevent="focusNext(index)"
-				@keydown.tab.prevent="focusNextTab(index, $event.shiftKey)" />
+				<input ref="inputRefs" class="line-input w-100" type="text" v-model="inputLines[index]"
+					@input="handleInput(index)" @keydown.enter.prevent="focusNext(index)"
+					@keydown.tab.prevent="focusNextTab(index, $event.shiftKey)" />
+			</div>
+		</div>
+
+		<!-- 結算區：完成後顯示 -->
+		<div v-else>
+			<div class="summary-area">
+				<div>錯誤字數: {{ errorCount }}</div>
+				<div>輸入字數: {{ inputCount }}</div>
+				<div>正確字數: {{ inputCount - errorCount }}</div>
+			</div>
 		</div>
 	</div>
 </template>
 
 <script setup>
 import { ref, watch, nextTick, computed } from 'vue'
+import { useTypingStatusStore } from '@/stores/typingStatusStore'
+
+const typingStore = useTypingStatusStore()
 
 // 計算錯誤字數
 const errorCount = computed(() => {
@@ -43,7 +55,9 @@ const inputCount = computed(() => {
 	return inputLines.value.reduce((total, line) => total + (line ? line.length : 0), 0)
 })
 
-
+const finishTyping = () => {
+	typingStore.finishTyping()
+}
 
 
 const props = defineProps({
@@ -82,8 +96,13 @@ watch(() => props.rawText, (newVal) => {
 		return
 	}
 
+	// 新文章載入時，重置 Pinia 狀態
+	typingStore.isStarted = false
+	typingStore.isFinished = false
+
 	fullwidthLines.value = []
 	inputLines.value = []
+	hasTyped.value = false // ✅ 這邊加上！
 
 	// 依照換行符號拆行，不限定長度
 	const lines = newVal.replace(/\r\n/g, '\n').split('\n')
@@ -108,7 +127,7 @@ const handleInput = (index) => {
 	// ⏱ 通知父層開始打字
 	if (!hasTyped.value && fullInput.trim() !== '') {
 		hasTyped.value = true
-		emit('typing-start')
+		typingStore.startTyping()  // ✅ 直接呼叫 Pinia
 	}
 }
 

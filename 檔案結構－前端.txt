@@ -1,14 +1,50 @@
-src/
+GhostKeys/
 │
-├── components/
-│   ├── TypingBox.vue        # 核心打字輸入區
-│   ├── LanguageSelector.vue # 語言切換按鈕（中 / 英）
-│   ├── TypingStats.vue      # 顯示統計資訊（速度、正確率等）
-│   ├── Timer.vue            # 計時器（選用）
-│   └── SentenceProvider.vue # 提供練習句子（中/英隨語言切換）
+├── backend/
+│   └── routes/
+│       └── templates.js
 │
-├── views/
-│   └── Home.vue             # 主畫面（組合各個元件）
 │
-├── App.vue                  # 應用主殼
-└── main.js                  # 程式進入點
+├── frontend/
+│   ├── public/
+│   └── src/
+│       ├── assets/
+│       ├── components/
+│       │   ├── common/
+│       │   │   ├── FooterArea.vue
+│       │   │   └── HeaderNavArea.vue
+│       │   │
+│       │   ├── info/
+│       │   │   ├── ArticleSelect.vue
+│       │   │   ├── InfoSettingArea.vue
+│       │   │   ├── RandomPracticeConfig.vue
+│       │   │   └── Setting_VirtualKeyboard.vue
+│       │   │
+│       │   ├── typing/
+│       │   │   └── InputArea.vue
+│       │   │
+│       │   ├── FloatInfoArea.vue
+│       │   └── VirtualKeyboard.vue
+│       │    
+│       ├── stores/
+│       │   ├── language.js
+│       │   ├── randomTextExportStore.js
+│       │   ├── typingStatusStore.js
+│       │   └── typingStore.js
+│       │   
+│       └── views/
+│           └── Home.vue
+│
+│
+├── public/
+│   └── textTemplates/
+│       ├── main/
+│       │   ├── ch/
+│       │   └── en/
+│       └── models/
+│           ├── 自訂文章示範/
+│           │   ├── ch/
+│           │   └── en/
+│           └── 更多檔案.../
+│               ├── ch/
+│               └── en/
