@@ -7,7 +7,7 @@
 		</div>
 
 		<!-- 輸入區：沒有背景動畫 -->
-		<div v-else-if="!typingStore.isFinished" class="window-input">
+		<div v-else-if="!typingStore.isFinished">
 			<div v-for="(line, index) in fullwidthLines" :key="index" class="line-group">
 				<div class="text-line">
 					<span v-for="(char, i) in line" :key="i"
@@ -20,38 +20,16 @@
 		</div>
 
 		<!-- 結算區 -->
-		<!-- 結算區 -->
 		<div v-else class="summary-area window">
 			<canvas ref="canvasSummary" class="bg-lines"></canvas>
 			<div class="neon-hint">
-				<div>耗時: {{ formattedDuration }}</div>
-				<!-- <div>總字數: {{ fullwidthLines.join('').length }}</div> -->
-				<div>輸入/總字數: {{ inputCount }}/{{ fullwidthLines.join('').length }}</div>
-				<div>正確/錯誤數: {{ inputCount - errorCount }}/{{ errorCount }}</div>
-				<!-- <div>錯誤字數: {{ errorCount }}</div> -->
-				<div>
-					完成率:
-					{{ inputCount > 0 ? (inputCount / fullwidthLines.join('').length * 100).toFixed(1) +
-						'%' : '0%' }}
-				</div>
-				<div>
-					正確率:
-					{{ inputCount > 0 ? ((inputCount - errorCount) / fullwidthLines.join('').length * 100).toFixed(1) +
-						'%' : '0%' }}
-				</div>
-				<div>
-					打字速度:
-					{{
-						typingStore.duration > 0
-							? Math.round((inputCount - errorCount) / (typingStore.duration / 60))
-							: 0
-					}} 字/分鐘
-				</div>
+				<div>錯誤字數: {{ errorCount }}</div>
+				<div>輸入字數: {{ inputCount }}</div>
+				<div>正確字數: {{ inputCount - errorCount }}</div>
 				<hr>
 				<small>重新選擇文章再次開始</small>
 			</div>
 		</div>
-
 	</div>
 </template>
 
@@ -94,82 +72,27 @@ const toFullwidth = (str) =>
 const emit = defineEmits(['typing-start', 'update-error-count', 'update-input-count'])
 
 
-// 英文自動換行（簡單示意）
-const EnglishLen = 57;
-function wrapTextEnglish(text, maxLength = EnglishLen) {
-	const paragraphs = text.replace(/\r\n/g, '\n').split('\n')
-	const lines = []
+// 這是自動換行函式，maxLength 可調整
+function wrapTextWithNewline(text, maxLength = 58) {
+  const lines = text.replace(/\r\n/g, '\n').split('\n') // 保留原換行
+  const wrappedLines = []
 
-	for (const para of paragraphs) {
-		if (!para.trim()) {
-			// 空行完全略過（移除）
-			continue
-		}
+  for (const line of lines) {
+    let currentLine = ''
+    for (const char of line) {
+      const charLength = /[\u4e00-\u9fa5]/.test(char) ? 2 : 1
+      if (currentLine.length + charLength > maxLength) {
+        wrappedLines.push(currentLine)
+        currentLine = char
+      } else {
+        currentLine += char
+      }
+    }
+    if (currentLine) wrappedLines.push(currentLine)
+  }
 
-		const words = para.split(/(\s+)/)
-		let line = ''
-
-		for (const word of words) {
-			if ((line + word).length > maxLength) {
-				if (line.trim()) lines.push(line.trim())
-				if (word.length > maxLength) {
-					// 拆分過長單字
-					for (let i = 0; i < word.length; i += maxLength) {
-						lines.push(word.slice(i, i + maxLength))
-					}
-					line = ''
-				} else {
-					line = word
-				}
-			} else {
-				line += word
-			}
-		}
-
-		if (line.trim()) lines.push(line.trim())
-	}
-
-	return lines
+  return wrappedLines
 }
-
-
-
-// 中文自動換行（每字計長度，中文算2）
-const chineseLen = 56;
-function wrapTextChinese(text, maxLength = chineseLen) {
-	const lines = text.replace(/\r\n/g, '\n').split('\n') // 保留原換行
-	const wrappedLines = []
-
-	for (let line of lines) {
-		if (line.trim() && !line.startsWith('  ')) {
-			line = '  ' + line.trimStart()
-		}
-
-		let currentLine = ''
-		let currentLength = 0
-
-		for (const char of line) {
-			const charLength = /[\u4e00-\u9fa5\u3000-\u303F\uFF00-\uFFEF]/.test(char) ? 1 : 1
-
-			if (currentLength + charLength > maxLength) {
-				wrappedLines.push(currentLine)
-				currentLine = char
-				currentLength = charLength
-			} else {
-				currentLine += char
-				currentLength += charLength
-			}
-		}
-
-		if (currentLine) wrappedLines.push(currentLine)
-	}
-
-	return wrappedLines
-}
-
-
-
-
 
 
 watch(
@@ -181,30 +104,22 @@ watch(
 	{ deep: true }
 )
 
-
-import { useLanguageStore } from '@/stores/languageStore'
-const languageStore = useLanguageStore()
 watch(() => props.rawText, (newVal) => {
-	if (!newVal) {
-		fullwidthLines.value = []
-		inputLines.value = []
-		return
-	}
-	typingStore.isStarted = false
-	typingStore.isFinished = false
-	hasTyped.value = false
+  if (!newVal) {
+    fullwidthLines.value = []
+    inputLines.value = []
+    return
+  }
+  typingStore.isStarted = false
+  typingStore.isFinished = false
+  hasTyped.value = false
 
-	let wrappedLines = []
-	if (languageStore.current === 'ch') {
-		wrappedLines = wrapTextChinese(newVal, chineseLen)
-	} else {
-		wrappedLines = wrapTextEnglish(newVal, EnglishLen)
-	}
+  const wrappedLines = wrapTextWithNewline(newVal, 58)
 
-	fullwidthLines.value = wrappedLines.map(line => toFullwidth(line))
-	inputLines.value = wrappedLines.map(() => '')
+  fullwidthLines.value = wrappedLines.map(line => toFullwidth(line))
+  inputLines.value = wrappedLines.map(() => '')
 
-	nextTick(() => { inputRefs.value = [] })
+  nextTick(() => { inputRefs.value = [] })
 })
 
 
@@ -219,7 +134,6 @@ const handleInput = (index) => {
 	}
 
 }
-
 
 const handleTab = async (index, event) => {
 	const total = inputRefs.value.length
@@ -245,32 +159,23 @@ const handleTab = async (index, event) => {
 
 const focusNext = async (index) => {
 	await nextTick()
-	// const nextInput = inputRefs.value?.[index + 1]
-	// if (nextInput) nextInput.focus()
-	const total = inputRefs.value.length
-	if (index + 1 < total) {
-		// 尚未到最後一行 → 聚焦下一行
-		inputRefs.value[index + 1]?.focus()
-		return
-	}
-
-	// ✅ 如果是最後一行 → 判斷是否已輸入完畢，跳出確認
-	if ((inputLines.value[index] || '').trim()) {
-		const confirmed = window.confirm('已輸入最後一行，要結束打字嗎？')
-		if (confirmed) {
-			typingStore.stopTyping()  // 停止計時狀態
-		}
-	}
+	const nextInput = inputRefs.value?.[index + 1]
+	if (nextInput) nextInput.focus()
 }
 
-const formattedDuration = computed(() => {
-	const totalSeconds = Math.floor(typingStore.duration)
-	// const totalSeconds = typingStore.elapsed
-	const minutes = Math.floor(totalSeconds / 60).toString().padStart(2, '0')
-	const seconds = (totalSeconds % 60).toString().padStart(2, '0')
-	return `${minutes}:${seconds}`
-})
-
+const focusNextTab = async (index, shift) => {
+	await nextTick()
+	const total = inputRefs.value.length
+	if (shift) {
+		const prevIndex = index === 0 ? total - 1 : index - 1
+		const prevInput = inputRefs.value[prevIndex]
+		if (prevInput) prevInput.focus()
+	} else {
+		const nextIndex = index === total - 1 ? 0 : index + 1
+		const nextInput = inputRefs.value[nextIndex]
+		if (nextInput) nextInput.focus()
+	}
+}
 
 // 動畫邏輯
 
@@ -403,6 +308,7 @@ onUnmounted(() => {
 <style scoped>
 .input-area {
 	background: #222;
+	/* padding: 1rem; */
 	color: #fff;
 	font-family: 'Courier New', monospace;
 	position: relative;
@@ -452,10 +358,6 @@ onUnmounted(() => {
 	color: #fff;
 	position: relative;
 	overflow: hidden;
-}
-
-.window-input {
-	padding: 0.8rem;
 }
 
 .bg-lines {

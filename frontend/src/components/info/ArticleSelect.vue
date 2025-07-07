@@ -16,7 +16,7 @@
 
 			<!-- 語言選擇 -->
 			<div class="col-2">
-				<select class="form-select" v-model="selectedLanguage" @change="handleLanguageChange"
+				<select class="form-select" v-model="languageStore.current" @change="handleLanguageChange"
 					:disabled="isStarted">
 					<option value="en">English</option>
 					<option value="ch">中文</option>
@@ -49,7 +49,9 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
+import { useLanguageStore } from '@/stores/languageStore'
+import { useTypingStatusStore } from '@/stores/typingStatusStore'  // 新增引入
 
 const props = defineProps({
 	isStarted: Boolean
@@ -58,7 +60,6 @@ const props = defineProps({
 const emit = defineEmits(['load-content'])
 
 const selectedPath = ref('main')
-const selectedLanguage = ref('en')
 const selectedFile = ref('')
 const fileContent = ref('')
 const showModal = ref(false)
@@ -66,6 +67,30 @@ const showModal = ref(false)
 const modelFolders = ref([])
 const allFileMap = ref({})
 const availableFiles = ref([])
+
+const languageStore = useLanguageStore()
+const typingStore = useTypingStatusStore()  // 新增取得 typingStatusStore
+
+// 監聽 isFinished 狀態，結束時清空 selectedFile
+watch(() => typingStore.isFinished, (finished) => {
+	if (finished) {
+		selectedFile.value = ''
+		fileContent.value = ''
+		showModal.value = false
+	}
+})
+
+// 當語言改變時更新可用檔案清單
+watch(() => languageStore.current, () => {
+	selectedFile.value = ''
+	updateAvailableFiles()
+})
+
+// 當路徑改變時更新可用檔案清單
+watch(selectedPath, () => {
+	selectedFile.value = ''
+	updateAvailableFiles()
+})
 
 onMounted(async () => {
 	const res = await fetch('/api/templates/list')
@@ -89,10 +114,12 @@ const updateAvailableFiles = () => {
 	const [base, sub] = selectedPath.value.split('/')
 	let files = []
 
+	const lang = languageStore.current
+
 	if (base === 'main') {
-		files = allFileMap.value.main?.[selectedLanguage.value] || []
+		files = allFileMap.value.main?.[lang] || []
 	} else if (base === 'models' && sub) {
-		files = allFileMap.value.models?.[sub]?.[selectedLanguage.value] || []
+		files = allFileMap.value.models?.[sub]?.[lang] || []
 	}
 
 	availableFiles.value = files
@@ -102,13 +129,12 @@ const previewFile = async () => {
 	if (!selectedFile.value) return
 
 	const path = selectedPath.value
-	const lang = selectedLanguage.value
+	const lang = languageStore.current
 	const fileName = selectedFile.value
 
 	const res = await fetch(`/api/templates/file?path=${path}&lang=${lang}&name=${encodeURIComponent(fileName)}`)
 	let content = await res.text()
 
-	content = content.split('\n').filter(line => line.trim() !== '').join('\n')
 	fileContent.value = content
 	showModal.value = true
 }
@@ -124,6 +150,7 @@ const confirmContent = () => {
 	showModal.value = false
 }
 </script>
+
 
 <style scoped>
 .modal-backdrop {

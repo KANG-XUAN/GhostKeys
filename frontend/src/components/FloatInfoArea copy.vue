@@ -1,18 +1,13 @@
 <template>
 	<div>
-		<!-- 回頂部按鈕 -->
-		<button class="floating-btn scroll-top-btn" @click="scrollToTop" title="回到頂部">
-			<i class="bi bi-arrow-up"></i>
-		</button>
-
 		<!-- 懸浮開啟按鈕 -->
 		<button class="floating-btn" :class="{ open: isFloatingOpen }" @click="toggleFloating">
 			<i :class="isFloatingOpen ? 'bi bi-x-lg' : 'bi bi-keyboard'"></i>
 		</button>
 
 		<!-- 浮窗區塊 -->
-		<div class="info-area floating-window" :class="{ visible: isFloatingOpen }">
-
+		<div v-show="isFloatingOpen || justClosed"
+			:class="['info-area', 'floating-window', { 'visible': isFloatingOpen }]">
 			<div class="row">
 				<!-- 虛擬鍵盤 -->
 				<div class="col-7 d-flex justify-content-center align-items-center">
@@ -44,15 +39,12 @@
 
 
 
-
 <script setup>
 import { ref, watch, computed } from 'vue'
 import VirtualKeyboard from '@/components/VirtualKeyboard.vue'
 import { useTypingStatusStore } from '@/stores/typingStatusStore'
-import { useKeyboardStore } from '@/stores/keyboardStore.js'
 
 const typingStore = useTypingStatusStore()
-const keyboardStore = useKeyboardStore()
 
 const props = defineProps({
 	errorCount: Number,
@@ -60,23 +52,15 @@ const props = defineProps({
 })
 
 const isFloatingOpen = ref(false)
+const justClosed = ref(false)
 
 const toggleFloating = () => {
 	isFloatingOpen.value = !isFloatingOpen.value
-	if (isFloatingOpen.value) {
-		keyboardStore.openKeyboard()
-
+	if (!isFloatingOpen.value) {
+		justClosed.value = true
 		setTimeout(() => {
-			// ➕ 當開啟浮動鍵盤時，視窗往下滾 150px
-			window.scrollBy({ top: 200, behavior: 'smooth' })
-		}, 50)
-	} else {
-		keyboardStore.closeKeyboard()
-
-		setTimeout(() => {
-			// ➕ 當關閉浮動鍵盤時，視窗往上滾 150px
-			window.scrollBy({ top: -200, behavior: 'smooth' })
-		}, 50)
+			justClosed.value = false
+		}, 300)
 	}
 }
 
@@ -96,13 +80,7 @@ const typingSpeed = computed(() => {
 	if (elapsed.value === 0) return 0
 	return Math.round((props.inputCount / elapsed.value) * 60)
 })
-
-// 新增回頂部方法
-const scrollToTop = () => {
-	window.scrollTo({ top: 0, behavior: 'smooth' })
-}
 </script>
-
 
 
 
@@ -193,17 +171,6 @@ const scrollToTop = () => {
 
 .floating-btn.open:hover {
 	background-color: #c62828;
-}
-
-/* 回頂部按鈕 */
-.scroll-top-btn {
-	background-color: #4cd94c;
-	bottom: 90px;
-	/* 比浮動鍵盤按鈕稍高 */
-}
-
-.scroll-top-btn:hover {
-	background-color: #29a627;
 }
 
 
