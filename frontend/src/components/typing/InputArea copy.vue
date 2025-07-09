@@ -14,11 +14,12 @@
 						:class="{ wrong: inputLines[index]?.[i] && inputLines[index][i] !== char }">{{ char }}</span>
 				</div>
 				<input ref="inputRefs" class="line-input w-100" type="text" v-model="inputLines[index]"
-					@input="handleInput(index)" @keydown="handleKeydown" @keydown.enter.prevent="focusNext(index)"
+					@input="handleInput(index)" @keydown="handleKeydownStart" @keydown.enter.prevent="focusNext(index)"
 					@keydown.tab.prevent="handleTab(index, $event)" />
 			</div>
 		</div>
 
+		<!-- 結算區 -->
 		<!-- 結算區 -->
 		<div v-else class="summary-area window">
 			<canvas ref="canvasSummary" class="bg-lines"></canvas>
