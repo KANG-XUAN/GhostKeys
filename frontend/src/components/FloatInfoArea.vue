@@ -51,7 +51,8 @@
 <script setup>
 import { ref, watch, computed } from 'vue'
 import VirtualKeyboard from '@/components/VirtualKeyboard.vue'
-import TransitionAlertArea from '@/components/common/TransitionAlertArea.vue'
+import TransitionAlertArea from './TransitionAlertArea.vue'
+// import TransitionAlertArea from '@/components/common/TransitionAlertArea.vue'
 import { useTypingStatusStore } from '@/stores/typingStatusStore'
 import { useKeyboardStore } from '@/stores/keyboardStore.js'
 

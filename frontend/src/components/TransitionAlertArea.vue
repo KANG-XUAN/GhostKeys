@@ -10,8 +10,12 @@
 							<h3>📌 盲打原則</h3>
 							<ul>
 								<li>雙眼看螢幕、不看鍵盤。</li>
-								<li>雙手擺在主鍵區：ASDF、JKL;</li>
-								<li>食指擺在有凸點的 F 與 J。</li>
+								<li>雙手擺在主鍵區：
+									<kbd>A</kbd> <kbd>S</kbd> <kbd>D</kbd> <kbd><u>F</u></kbd>
+									||
+									<kbd><u>J</u></kbd> <kbd>K</kbd> <kbd>L</kbd> <kbd>;</kbd>
+								</li>
+								<li>食指擺在有凸點的 <kbd><u>F</u></kbd> 與 <kbd><u>J</u></kbd>。</li>
 								<li>每根手指負責固定按鍵、不跨區。</li>
 							</ul>
 							<img src="@/assets/keyboard.png" alt="手指對應鍵位圖" class="finger-map" />
@@ -23,16 +27,16 @@
 							<h3>💻 中文輸入法快捷鍵教學</h3>
 							<p><strong>🔤 輸入法切換：</strong></p>
 							<ul>
-								<li><strong>Ctrl + Shift</strong> → 切換不同輸入法</li>
-								<li><strong>Alt + Shift</strong> → 快速切換語言（有時沒用）</li>
-								<li><strong>Shift</strong>（單按）→ 中英文切換</li>
-								<li><strong>Shift + Space</strong> → 切換全形 / 半形</li>
+								<li><kbd>Ctrl</kbd> + <kbd>Shift</kbd> → 切換不同輸入法</li>
+								<li><kbd>Alt</kbd> + <kbd>Shift</kbd> → 快速切換語言（有時沒用）</li>
+								<li><kbd>Shift</kbd>（單按）→ 中英文切換</li>
+								<li><kbd>Shift</kbd> + <kbd>Space</kbd> → 切換全形 / 半形</li>
 							</ul>
 							<p><strong>⚠️ 狀態鍵注意：</strong></p>
 							<ul>
-								<li><strong>Caps Lock</strong> → 鎖定大寫字母，易導致英文字輸入錯誤</li>
-								<li><strong>Num Lock</strong> → 控制數字鍵區開關，關閉時無法輸入數字</li>
-								<li><strong>Insert</strong> → 切換「插入 / 覆蓋模式」，覆蓋模式會吃掉原文字</li>
+								<li><kbd>Caps Lock</kbd> → 鎖定大寫字母，易導致英文字輸入錯誤</li>
+								<li><kbd>Num Lock</kbd> → 控制數字鍵區開關，關閉時無法輸入數字</li>
+								<li><kbd>Insert</kbd> → 切換 插入/覆蓋 模式 ，覆蓋模式會吃掉原文字</li>
 							</ul>
 						</div>
 
@@ -41,18 +45,20 @@
 							<h3>💻 中文輸入法快捷鍵教學</h3>
 							<p><strong>🔧 符號 / 表情：</strong></p>
 							<ul>
-								<li><strong>Ctrl + Alt + ,</strong> → 開啟符號選單（中文輸入法）</li>
-								<li><strong>Win + .</strong> 或 <strong>Win + ;</strong> → 開啟 Emoji / 特殊符號面板</li>
+								<li><kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>,</kbd> → 開啟符號選單（中文輸入法）</li>
+								<li><kbd>Win</kbd> + <kbd>.</kbd> <strong>|或|</strong> <kbd>Win</kbd> + <kbd>;</kbd> → 開啟 Emoji / 特殊符號面板
+								</li>
 							</ul>
 							<p><strong>🈷️ 中文標點符號打法：</strong></p>
 							<ul>
 								<li>
-									<strong>Ctrl + 標點鍵</strong>　或　<strong>Ctrl + Shift + 標點鍵</strong><br>
+									<kbd>Ctrl</kbd> + 標點鍵 <strong>|或|</strong> <kbd>Ctrl</kbd> + <kbd>Shift</kbd> +
+									標點鍵<br>
 									→ 輸入對應的全形標點（如「、」「。」「！」「？」...）
 								</li>
 								<li>
-									<strong>Ctrl + 【</strong>　或　<strong>Ctrl + 】</strong><br>
-									→ 方向鍵 ↓ 切換常用中文括號（「（）」「【】」「《》」...）
+									<kbd>Ctrl</kbd> + <kbd>[</kbd> <strong>|或|</strong> <kbd>Ctrl</kbd> + <kbd>]</kbd><br>
+									→ 方向鍵 <kbd>↓</kbd> 切換常用中文括號（「（）」「【】」「《》」...）
 								</li>
 							</ul>
 							<input type="text" placeholder="「來這裡測試看看！」🎉" class="test-input">
@@ -61,15 +67,19 @@
 						<!-- Page 4 -->
 						<div v-else-if="currentPage === 4">
 							<h3>📙 基礎指法 1：中列八指定位</h3>
-							<p><strong>新增鍵：</strong>ａ, ｓ, ｄ, ｆ, ｊ, ｋ, ｌ, ；</p>
+							<p><strong>新增鍵：</strong>
+								<kbd>A</kbd> <kbd>S</kbd> <kbd>D</kbd> <kbd><u>F</u></kbd>
+								||
+								<kbd><u>J</u></kbd> <kbd>K</kbd> <kbd>L</kbd> <kbd>;</kbd>
+							</p>
 							<p><strong>對應手指：</strong></p>
 							<ul>
-								<li>左小指：ａ　左環指：ｓ　左中指：ｄ　左食指：ｆ</li>
-								<li>右食指：ｊ　右中指：ｋ　右環指：ｌ　右小指：；</li>
+								<li>左小指：<kbd>A</kbd>　左環指：<kbd>S</kbd>　左中指：<kbd>D</kbd>　左食指：<kbd><u>F</u></kbd></li>
+								<li>右食指：<kbd><u>J</u></kbd>　右中指：<kbd>K</kbd>　右環指：<kbd>L</kbd>　右小指：<kbd>;</kbd></li>
 							</ul>
 							<p><strong>章節重點：</strong></p>
 							<ul>
-								<li>建立「回家鍵」概念：F 與 J 為定位鍵。</li>
+								<li>建立「回家鍵」概念：<kbd><u>F</u></kbd> 與 <kbd><u>J</u></kbd> 為定位鍵。</li>
 								<li>練習每根手指獨立打擊一個對應鍵。</li>
 								<li>培養正確手型與輸入節奏。</li>
 							</ul>
@@ -78,28 +88,32 @@
 						<!-- Page 5 -->
 						<div v-else-if="currentPage === 5">
 							<h3>📙 基礎指法 2：上列延伸（小指＋環指）</h3>
-							<p><strong>新增鍵：</strong>ｑ, ｗ, ｏ, ｐ</p>
+							<p><strong>新增鍵：</strong>
+								<kbd>Q</kbd> <kbd>W</kbd> || <kbd>O</kbd> <kbd>P</kbd>
+							</p>
 							<p><strong>對應手指：</strong></p>
 							<ul>
-								<li>左小指：ｑ　左環指：ｗ</li>
-								<li>右環指：ｏ　右小指：ｐ</li>
+								<li>左小指：<kbd>Q</kbd>　左環指：<kbd>W</kbd></li>
+								<li>右環指：<kbd>O</kbd>　右小指：<kbd>P</kbd></li>
 							</ul>
 							<p><strong>章節重點：</strong></p>
 							<ul>
 								<li>小指和環指彈性較低，要多練穩定性與控制力。</li>
 								<li>練習上下列切換時的距離與精確性。</li>
-								<li>打完鍵後要回家放回 ａ、ｓ、ｌ、；。</li>
+								<li>打完鍵後要回家放回 <kbd>A</kbd> <kbd>S</kbd> || <kbd>L</kbd> <kbd>;</kbd></li>
 							</ul>
 						</div>
 
 						<!-- Page 6 -->
 						<div v-else-if="currentPage === 6">
 							<h3>📙 基礎指法 3：上列延伸（中指＋食指）</h3>
-							<p><strong>新增鍵：</strong>ｅ, ｒ, ｕ, ｉ</p>
+							<p><strong>新增鍵：</strong>
+								<kbd>E</kbd> <kbd>R</kbd> || <kbd>U</kbd> <kbd>I</kbd>
+							</p>
 							<p><strong>對應手指：</strong></p>
 							<ul>
-								<li>左中指：ｅ　左食指：ｒ</li>
-								<li>右食指：ｉ　右中指：ｕ</li>
+								<li>左中指：<kbd>E</kbd>　左食指：<kbd>R</kbd></li>
+								<li>右食指：<kbd>I</kbd>　右中指：<kbd>U</kbd></li>
 							</ul>
 							<p><strong>章節重點：</strong></p>
 							<ul>
@@ -112,11 +126,15 @@
 						<!-- Page 7 -->
 						<div v-else-if="currentPage === 7">
 							<h3>📙 基礎指法 4：食指延伸＋左右跨列</h3>
-							<p><strong>新增鍵：</strong>ｔ, ｇ, ｂ, ｙ, ｈ, ｎ</p>
+							<p><strong>新增鍵：</strong>
+								<kbd>T</kbd> <kbd>G</kbd> <kbd>B</kbd>
+								||
+								<kbd>Y</kbd> <kbd>H</kbd> <kbd>N</kbd>
+							</p>
 							<p><strong>對應手指：</strong></p>
 							<ul>
-								<li>左食指：ｔ, ｇ, ｂ</li>
-								<li>右食指：ｙ, ｈ, ｎ</li>
+								<li>左食指：<kbd>T</kbd> <kbd>G</kbd> <kbd>B</kbd></li>
+								<li>右食指：<kbd>Y</kbd> <kbd>H</kbd> <kbd>N</kbd></li>
 							</ul>
 							<p><strong>章節重點：</strong></p>
 							<ul>
@@ -129,11 +147,12 @@
 						<!-- Page 8 -->
 						<div v-else-if="currentPage === 8">
 							<h3>📙 基礎指法 5：下列延伸（小指＋環指）</h3>
-							<p><strong>新增鍵：</strong>ｚ, ｘ, ／, ．</p>
+							<p><strong>新增鍵：</strong>
+								<kbd>Z</kbd> <kbd>X</kbd> || <kbd>/</kbd> <kbd>.</kbd></p>
 							<p><strong>對應手指：</strong></p>
 							<ul>
-								<li>左小指：ｚ　左環指：ｘ</li>
-								<li>右環指：．　右小指：／</li>
+								<li>左小指：<kbd>Z</kbd>　左環指：<kbd>X</kbd></li>
+								<li>右環指：<kbd>.</kbd>　右小指：<kbd>/</kbd></li>
 							</ul>
 							<p><strong>章節重點：</strong></p>
 							<ul>
@@ -145,11 +164,12 @@
 						<!-- Page 9 -->
 						<div v-else-if="currentPage === 9">
 							<h3>📙 基礎指法 6：下列延伸（中指＋食指）</h3>
-							<p><strong>新增鍵：</strong>ｃ, ｖ, ，, ｍ</p>
+							<p><strong>新增鍵：</strong>
+								<kbd>C</kbd> <kbd>V</kbd> || <kbd>,</kbd> <kbd>M</kbd></p>
 							<p><strong>對應手指：</strong></p>
 							<ul>
-								<li>左中指：ｃ　左食指：ｖ</li>
-								<li>右食指：ｍ　右中指：，</li>
+								<li>左中指：<kbd>C</kbd>　左食指：<kbd>V</kbd></li>
+								<li>右食指：<kbd>M</kbd>　右中指：<kbd>,</kbd></li>
 							</ul>
 							<p><strong>章節重點：</strong></p>
 							<ul>
