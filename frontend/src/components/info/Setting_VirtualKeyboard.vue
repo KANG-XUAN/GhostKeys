@@ -10,7 +10,8 @@
 					{
 						active: selectedKeys.has(key),
 						clickable: allowedKeys.includes(key),
-						'tip-key': key === '📄'
+						'tip-key': key === '📄',
+						'capslock-key': key === 'CapsLock' // 特別樣式
 					}
 				]" @mousedown.left.prevent="handleDown(key)" @mouseenter="dragOver(key)">
 					{{ displayKey(key) }}
@@ -27,10 +28,12 @@
 				<li>按住左鍵不放 → 拖曳滑過多個鍵進行批量開 / 關</li>
 				<li>可用的按鍵有淺藍色背景，無效按鍵無法互動</li>
 				<li>已啟用的按鍵會變成深藍色</li>
+				<li>啟用 <kbd style="background-color:#f1f8e9; color: #388e3c;">Caps</kbd> 文章中便會大小寫混用</li>
 			</ul>
 		</MessageAlertArea>
 	</div>
 </template>
+
 
 
 <script setup>
@@ -93,13 +96,20 @@ const displayKey = (key) => {
 const showTip = ref(false)
 
 const handleDown = (key) => {
-	// 📄 鍵點擊時直接打開提示，不觸發拖曳
 	if (key === '📄') {
 		showTip.value = true
 		return
 	}
 
 	if (!allowedKeys.includes(key)) return
+
+	// 點擊 CapsLock 處理
+	if (key === 'CapsLock') {
+		// 加入或移除 CapsLock 鍵位到 selectedKeys 中
+		store.toggleKey('CapsLock')
+		store.generateRandomText(store.textLength) // 重新生成隨機文章
+		return
+	}
 
 	isDragging.value = true
 	dragMode.value = selectedKeys.value.has(key) ? 'deselect' : 'select'
@@ -133,6 +143,7 @@ defineExpose({
 	)
 })
 </script>
+
 
 
 <style scoped>
@@ -183,6 +194,26 @@ defineExpose({
 
 .key.tip-key:hover {
 	background-color: #ffe8a1;
+}
+
+.key.capslock-key {
+	background-color: #f1f8e9;
+	/* 預設背景色 */
+	color: #388e3c;
+	/* 預設文字顏色 */
+	border-radius: 5px;
+	transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+}
+
+.key.capslock-key.active {
+	background-color: #388e3c;
+	/* 開啟時的背景色 */
+	color: #ffffff;
+	/* 開啟時文字顏色 */
+	box-shadow: 0 0 12px rgba(56, 142, 108, 0.8);
+	/* 開啟時的陰影效果 */
+	transform: scale(1.05);
+	/* 開啟時輕微放大 */
 }
 
 

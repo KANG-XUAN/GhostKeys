@@ -5,6 +5,7 @@ export const useTypingStore = defineStore('typing', () => {
 	const selectedKeys = ref(new Set())
 	const randomText = ref('')
 	const textLength = ref(200) // 新增：文章長度 ref
+	const isCapsLockOn = computed(() => selectedKeys.value.has('CapsLock')) // ⬅️ 新增 CapsLock 狀態
 
 	// 可被選取的按鍵（英文字母 + 數字 + 符號鍵）
 	const allowedKeys = [
@@ -14,7 +15,7 @@ export const useTypingStore = defineStore('typing', () => {
 		'BracketLeft', 'BracketRight',
 		'Semicolon', 'Quote',
 		'Comma', 'Period', 'Slash',
-		'Backslash',
+		'Backslash', 'CapsLock',
 	]
 
 	const symbolMap = {
@@ -49,7 +50,12 @@ export const useTypingStore = defineStore('typing', () => {
 			let word = ''
 			for (let i = 0; i < wordLength && count < length; i++) {
 				const randomIndex = Math.floor(Math.random() * letters.length)
-				word += letters[randomIndex]
+				let letter = letters[randomIndex]
+				if (selectedKeys.value.has('CapsLock') && /^[a-z]$/.test(letter)) {
+					// 隨機決定大寫或小寫 (50% 機率)
+					letter = Math.random() < 0.5 ? letter.toUpperCase() : letter.toLowerCase()
+				}
+				word += letter
 				count++
 			}
 			result += word + ' '
@@ -94,5 +100,6 @@ export const useTypingStore = defineStore('typing', () => {
 		generateRandomText,
 		setSelectedLetters,
 		textLength, // ← 將 textLength 暴露出去給外部使用
+		isCapsLockOn,
 	}
 })
