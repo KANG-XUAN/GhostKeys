@@ -50,19 +50,29 @@
           <span>秒</span>
         </div>
       </div>
+
+      <!-- 只有啟用 CapsLock 才顯示大寫比例設定 -->
+      <div v-if="typingStatus.selectedKeys.has('CapsLock')" class="d-flex align-items-center ms-auto gap-2">
+        <label class="form-label mb-0" style="width: 100px;">大寫比例：</label>
+        <input type="range" min="1" max="100" v-model.number="uppercaseRatio" class="form-range" />
+        <span class="uppercase-ratio">{{ uppercaseRatio }}%</span>
+      </div>
     </div>
   </div>
 </template>
-
 
 <script setup>
 import { ref, watch } from 'vue'
 import ArticleSelect from './ArticleSelect.vue'
 import RandomPracticeConfig from './RandomPracticeConfig.vue'
 import { useTypingStatusStore } from '@/stores/typingStatusStore'
+import { useTypingStore } from '@/stores/typingStore'
+
 const typingStore = useTypingStatusStore()
+const typingStatus = useTypingStore()
+
 const props = defineProps({
-	isStarted: Boolean,
+  isStarted: Boolean,
 })
 
 const emit = defineEmits(['load-content'])
@@ -76,6 +86,13 @@ const practiceMode = ref('full')
 // 限時練習時間（分鐘 / 秒），預設 1 分鐘
 const minutes = ref(1)
 const seconds = ref(0)
+
+// 大寫比例滑桿，預設 50%
+const uppercaseRatio = ref(typingStatus.uppercaseRatio ?? 50)
+
+watch(uppercaseRatio, (val) => {
+  typingStatus.uppercaseRatio = val
+})
 
 // 初始化：設定預設練習模式為 full
 typingStore.practiceMode = 'full'
@@ -97,8 +114,6 @@ watch([minutes, seconds], () => {
   }
 })
 </script>
-
-
 
 <style scoped>
 /* 隨機開關樣式 */
@@ -123,9 +138,19 @@ watch([minutes, seconds], () => {
   width: 2.5em;
 }
 
+.form-range {
+  width: 20vw;
+}
+
+.uppercase-ratio {
+  display: inline-block;  /* 讓 span 可以設置寬度 */
+  width: 4rem;           /* 設定固定寬度 */
+  text-align: center;     /* 讓數字居中 */
+  white-space: nowrap;    /* 防止換行 */
+}
+
 /* 模式選擇區塊高度統一 */
 .mode-options {
   height: 32px;
 }
-
 </style>

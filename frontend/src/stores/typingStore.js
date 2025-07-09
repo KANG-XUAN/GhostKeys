@@ -4,8 +4,9 @@ import { ref, computed, watch } from 'vue'
 export const useTypingStore = defineStore('typing', () => {
 	const selectedKeys = ref(new Set())
 	const randomText = ref('')
-	const textLength = ref(200) // 新增：文章長度 ref
-	const isCapsLockOn = computed(() => selectedKeys.value.has('CapsLock')) // ⬅️ 新增 CapsLock 狀態
+	const textLength = ref(200) // 文章長度
+	const uppercaseRatio = ref(50) // 可設定的大寫機率（1~100）
+	const isCapsLockOn = computed(() => selectedKeys.value.has('CapsLock'))
 
 	// 可被選取的按鍵（英文字母 + 數字 + 符號鍵）
 	const allowedKeys = [
@@ -51,10 +52,13 @@ export const useTypingStore = defineStore('typing', () => {
 			for (let i = 0; i < wordLength && count < length; i++) {
 				const randomIndex = Math.floor(Math.random() * letters.length)
 				let letter = letters[randomIndex]
-				if (selectedKeys.value.has('CapsLock') && /^[a-z]$/.test(letter)) {
-					// 隨機決定大寫或小寫 (50% 機率)
-					letter = Math.random() < 0.5 ? letter.toUpperCase() : letter.toLowerCase()
+
+				if (isCapsLockOn.value && /^[a-z]$/.test(letter)) {
+					// 根據設定機率轉成大寫
+					const ratio = uppercaseRatio.value / 100
+					letter = Math.random() < ratio ? letter.toUpperCase() : letter.toLowerCase()
 				}
+
 				word += letter
 				count++
 			}
@@ -77,7 +81,7 @@ export const useTypingStore = defineStore('typing', () => {
 		})
 	}
 
-	watch([selectedLetters, textLength], () => {
+	watch([selectedLetters, textLength, uppercaseRatio], () => {
 		generateRandomText(textLength.value)
 	}, { immediate: true })
 
@@ -99,7 +103,8 @@ export const useTypingStore = defineStore('typing', () => {
 		selectedLetters,
 		generateRandomText,
 		setSelectedLetters,
-		textLength, // ← 將 textLength 暴露出去給外部使用
+		textLength,
 		isCapsLockOn,
+		uppercaseRatio,
 	}
 })
