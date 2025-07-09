@@ -53,9 +53,12 @@ import { ref, watch, computed } from 'vue'
 import VirtualKeyboard from '@/components/VirtualKeyboard.vue'
 import TransitionAlertArea from '@/components/common/TransitionAlertArea.vue'
 import { useTypingStatusStore } from '@/stores/typingStatusStore'
+import { useKeyboardStore } from '@/stores/keyboardStore.js'
+
 
 // 狀態管理：打字進度與虛擬鍵盤開關
 const typingStore = useTypingStatusStore()
+const keyboardStore = useKeyboardStore()
 
 // 父元件傳入的 props（錯誤字數與輸入字數）
 const props = defineProps({
@@ -79,19 +82,19 @@ const toggleFloating = () => {
 	isFloatingOpen.value = !isFloatingOpen.value
 
 	if (isFloatingOpen.value) {
-		keyboardStore.openKeyboard()
+		keyboardStore.toggleKeyboard()
 
 		// 打開後稍微滾動視窗，確保可見
 		setTimeout(() => {
 			window.scrollBy({ top: 200, behavior: 'smooth' })
 		}, 50)
 	} else {
-		keyboardStore.closeKeyboard()
+		keyboardStore.toggleKeyboard()
 
 		// 關閉後滾回來
-		setTimeout(() => {
-			window.scrollBy({ top: -200, behavior: 'smooth' })
-		}, 50)
+		// setTimeout(() => {
+		// 	window.scrollBy({ top: -180, behavior: 'smooth' })
+		// }, 50)
 	}
 }
 
