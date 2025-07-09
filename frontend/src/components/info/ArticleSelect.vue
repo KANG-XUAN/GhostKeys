@@ -87,8 +87,8 @@ const typingStore = useTypingStatusStore()
 const fileStore = useFileStore()
 
 const selectedLanguage = computed({
-  get: () => languageStore.current,
-  set: val => languageStore.current = val
+	get: () => languageStore.current,
+	set: val => languageStore.current = val
 })
 
 // --------------------------
@@ -190,8 +190,7 @@ const previewFile = async () => {
 	const res = await fetch(`/api/templates/file?path=${path}&lang=${lang}&name=${encodeURIComponent(fileName)}`)
 	const rawContent = await res.text()
 
-	const content = rawContent.split('\n').filter(line => line.trim() !== '').join('\n')
-	fileContent.value = content
+	fileContent.value = rawContent  // ← 保留原始換行與空行
 	showModal.value = true
 }
 
