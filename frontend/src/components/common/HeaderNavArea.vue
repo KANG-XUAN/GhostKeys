@@ -14,7 +14,10 @@
       <span v-if="!typingStore.isStarted" class="logo">GhostKeys</span>
 
       <!-- 若已開始練習，顯示格式化時間 -->
-      <span v-else class="timer">{{ formattedTime }}</span>
+      <span v-else class="timer-wrapper">
+        <span class="timer">{{ formattedTime }}</span>
+        <span class="mouse-icon">🖱️</span>
+      </span>
     </div>
   </div>
 </template>
@@ -207,9 +210,23 @@ onUnmounted(() => clearInterval(timer))
   font-size: 1rem;
 }
 
+.timer-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
 /* 計時器數字樣式 */
 .timer {
   font-size: 1.3rem;
+  transform: translateY(14px);
+}
+
+.mouse-icon {
+  font-size: 1rem;
+  opacity: 0.8;
+  transform: translateY(14px);
 }
 
 /* 水波紋動畫效果，用於按下時的 feedback */

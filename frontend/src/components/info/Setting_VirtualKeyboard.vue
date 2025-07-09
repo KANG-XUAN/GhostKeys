@@ -20,7 +20,8 @@
 
 		<!-- 顯示提示元件 -->
 		<MessageAlertArea v-if="showTip" @close="showTip = false">
-			<h3>🖱️ 鍵盤設定教學</h3>
+			<h5>🖱️ 鍵盤設定教學</h5>
+			<hr>
 			<ul>
 				<li>單擊任一按鍵 → 開 / 關該鍵位</li>
 				<li>按住左鍵不放 → 拖曳滑過多個鍵進行批量開 / 關</li>

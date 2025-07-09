@@ -36,7 +36,7 @@
 							<ul>
 								<li><kbd>Caps Lock</kbd> → 鎖定大寫字母，易導致英文字輸入錯誤</li>
 								<li><kbd>Num Lock</kbd> → 控制數字鍵區開關，關閉時無法輸入數字</li>
-								<li><kbd>Insert</kbd> → 切換 插入/覆蓋 模式 ，覆蓋模式會吃掉原文字</li>
+								<li><kbd>Insert</kbd> → 插入/覆蓋 切換，覆蓋模式會吃掉原文字</li>
 							</ul>
 						</div>
 
@@ -46,7 +46,7 @@
 							<p><strong>🔧 符號 / 表情：</strong></p>
 							<ul>
 								<li><kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>,</kbd> → 開啟符號選單（中文輸入法）</li>
-								<li><kbd>Win</kbd> + <kbd>.</kbd> <strong>|或|</strong> <kbd>Win</kbd> + <kbd>;</kbd> → 開啟 Emoji / 特殊符號面板
+								<li><kbd>Win</kbd> + <kbd>.</kbd> <strong>|或|</strong> <kbd>Win</kbd> + <kbd>;</kbd> → 開啟 Emoji 面板
 								</li>
 							</ul>
 							<p><strong>🈷️ 中文標點符號打法：</strong></p>
@@ -54,11 +54,11 @@
 								<li>
 									<kbd>Ctrl</kbd> + 標點鍵 <strong>|或|</strong> <kbd>Ctrl</kbd> + <kbd>Shift</kbd> +
 									標點鍵<br>
-									→ 輸入對應的全形標點（如「、」「。」「！」「？」...）
+									→ 輸入對應的全形標點（如「、」「。」...）
 								</li>
 								<li>
 									<kbd>Ctrl</kbd> + <kbd>[</kbd> <strong>|或|</strong> <kbd>Ctrl</kbd> + <kbd>]</kbd><br>
-									→ 方向鍵 <kbd>↓</kbd> 切換常用中文括號（「（）」「【】」「《》」...）
+									→ 用方向鍵 <kbd>↓</kbd> 切換常用中文括號
 								</li>
 							</ul>
 							<input type="text" placeholder="「來這裡測試看看！」🎉" class="test-input">
