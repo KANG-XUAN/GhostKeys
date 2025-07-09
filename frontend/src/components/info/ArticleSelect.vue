@@ -1,11 +1,12 @@
 <template>
 	<div>
-		<!-- 表單排版：路徑選擇 + 語言選擇 + 檔案選單 -->
+		<!-- 表單列：路徑選擇、語言選擇、檔案選擇 -->
 		<div class="row align-items-center mb-3">
-			<!-- 路徑選擇 -->
+
+			<!-- 路徑選擇：main 或 models 下的資料夾 -->
 			<div class="col-3">
 				<select class="form-select" v-model="selectedPath" @change="handlePathChange" :disabled="isStarted">
-					<option value="main">預設</option>
+					<option value="main">指法練習</option>
 					<optgroup label="models">
 						<option v-for="folder in modelFolders" :key="folder" :value="`models/${folder}`">
 							{{ folder }}
@@ -14,7 +15,7 @@
 				</select>
 			</div>
 
-			<!-- 語言選擇 -->
+			<!-- 語言選擇：英文 / 中文 -->
 			<div class="col-2">
 				<select class="form-select" v-model="selectedLanguage" @change="handleLanguageChange"
 					:disabled="isStarted">
@@ -23,7 +24,7 @@
 				</select>
 			</div>
 
-			<!-- 檔案選擇 -->
+			<!-- 檔案選擇：根據路徑與語言動態載入 -->
 			<div class="col-7">
 				<select class="form-select" v-model="selectedFile" @change="previewFile" :disabled="isStarted">
 					<option disabled value="">請選擇文章</option>
@@ -34,7 +35,7 @@
 			</div>
 		</div>
 
-		<!-- Modal 預覽 -->
+		<!-- 預覽 Modal：顯示文章內容 -->
 		<div v-if="showModal" class="modal-backdrop">
 			<div class="modal-box">
 				<h3 class="text-lg fw-bold mb-2">文章內容預覽</h3>
@@ -48,24 +49,91 @@
 	</div>
 </template>
 
-<script setup>
-import { ref, onMounted } from 'vue'
 
+<script setup>
+import { ref, onMounted, watch, computed } from 'vue'
+import { useLanguageStore } from '@/stores/languageStore'
+import { useTypingStatusStore } from '@/stores/typingStatusStore'
+import { useFileStore } from '@/stores/fileStore'
+
+
+
+
+// 父層傳入的 props
 const props = defineProps({
 	isStarted: Boolean
 })
 
+// 發出事件（例如 emit('load-content', 內容)）
 const emit = defineEmits(['load-content'])
 
-const selectedPath = ref('main')
-const selectedLanguage = ref('en')
-const selectedFile = ref('')
-const fileContent = ref('')
-const showModal = ref(false)
+// --------------------------
+// 狀態變數區
+// --------------------------
 
-const modelFolders = ref([])
-const allFileMap = ref({})
-const availableFiles = ref([])
+const fileContent = ref('')        // 預覽內容
+const showModal = ref(false)       // 是否顯示預覽 modal
+
+const allFileMap = ref({})         // 所有檔案地圖（從後端抓取）
+const modelFolders = ref([])       // models 下的資料夾名稱列表
+const availableFiles = ref([])     // 可供選擇的檔案清單
+
+// --------------------------
+// 使用 Pinia Store
+// --------------------------
+
+const languageStore = useLanguageStore()
+const typingStore = useTypingStatusStore()
+const fileStore = useFileStore()
+
+const selectedLanguage = computed({
+  get: () => languageStore.current,
+  set: val => languageStore.current = val
+})
+
+// --------------------------
+// store 狀態對應 computed 綁定
+// --------------------------
+
+const selectedPath = computed({
+	get: () => fileStore.selectedPath,
+	set: (val) => fileStore.selectedPath = val
+})
+
+const selectedFile = computed({
+	get: () => fileStore.selectedFile,
+	set: (val) => fileStore.selectedFile = val
+})
+
+// --------------------------
+// 監聽：打字結束時重置畫面
+// --------------------------
+
+watch(() => typingStore.isFinished, (finished) => {
+	if (finished) {
+		fileStore.clearSelection()
+		fileContent.value = ''
+		showModal.value = false
+	}
+})
+
+// --------------------------
+// 監聽：語言與路徑變更時更新檔案清單
+// --------------------------
+
+watch(() => languageStore.current, () => {
+	fileStore.selectedFile = ''
+	updateAvailableFiles()
+})
+
+watch(selectedPath, () => {
+	fileStore.selectedFile = ''
+	updateAvailableFiles()
+})
+
+// --------------------------
+// 初始掛載時，取得所有可選檔案資料
+// --------------------------
 
 onMounted(async () => {
 	const res = await fetch('/api/templates/list')
@@ -75,28 +143,42 @@ onMounted(async () => {
 	updateAvailableFiles()
 })
 
+// --------------------------
+// 方法：處理選單改變
+// --------------------------
+
 const handlePathChange = () => {
-	selectedFile.value = ''
+	fileStore.selectedFile = ''
 	updateAvailableFiles()
 }
 
 const handleLanguageChange = () => {
-	selectedFile.value = ''
+	fileStore.selectedFile = ''
 	updateAvailableFiles()
 }
 
+// --------------------------
+// 方法：根據路徑與語言更新檔案清單
+// --------------------------
+
 const updateAvailableFiles = () => {
 	const [base, sub] = selectedPath.value.split('/')
+	const lang = languageStore.current  // 直接用 store 裡的 current
 	let files = []
 
 	if (base === 'main') {
-		files = allFileMap.value.main?.[selectedLanguage.value] || []
+		files = allFileMap.value.main?.[lang] || []
 	} else if (base === 'models' && sub) {
-		files = allFileMap.value.models?.[sub]?.[selectedLanguage.value] || []
+		files = allFileMap.value.models?.[sub]?.[lang] || []
 	}
 
 	availableFiles.value = files
 }
+
+
+// --------------------------
+// 方法：載入文章內容並預覽
+// --------------------------
 
 const previewFile = async () => {
 	if (!selectedFile.value) return
@@ -106,17 +188,22 @@ const previewFile = async () => {
 	const fileName = selectedFile.value
 
 	const res = await fetch(`/api/templates/file?path=${path}&lang=${lang}&name=${encodeURIComponent(fileName)}`)
-	let content = await res.text()
+	const rawContent = await res.text()
 
-	content = content.split('\n').filter(line => line.trim() !== '').join('\n')
+	const content = rawContent.split('\n').filter(line => line.trim() !== '').join('\n')
 	fileContent.value = content
 	showModal.value = true
 }
 
+
+// --------------------------
+// Modal 操作方法
+// --------------------------
+
 const cancelModal = () => {
 	showModal.value = false
 	fileContent.value = ''
-	selectedFile.value = ''
+	fileStore.selectedFile = ''
 }
 
 const confirmContent = () => {
@@ -126,6 +213,7 @@ const confirmContent = () => {
 </script>
 
 <style scoped>
+/* 預覽 Modal 背景遮罩 */
 .modal-backdrop {
 	position: fixed;
 	inset: 0;
@@ -136,6 +224,7 @@ const confirmContent = () => {
 	z-index: 1000;
 }
 
+/* Modal 本體樣式 */
 .modal-box {
 	background: white;
 	padding: 2rem;
@@ -145,6 +234,7 @@ const confirmContent = () => {
 	box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
+/* 預覽文字區塊樣式 */
 .preview-text {
 	white-space: pre-wrap;
 	max-height: 300px;
@@ -155,6 +245,7 @@ const confirmContent = () => {
 	border-radius: 6px;
 }
 
+/* 選單中 optgroup 的縮排 */
 select optgroup option {
 	padding-left: 1rem;
 }

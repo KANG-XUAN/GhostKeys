@@ -1,27 +1,52 @@
-// src/stores/typingStatusStore.js
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 
 export const useTypingStatusStore = defineStore('typingStatus', () => {
-	const isStarted = ref(false)      // 是否正在打字
-	const isFinished = ref(false)     // 是否已完成（新增）
-	const elapsed = ref(0)            // 秒數（配合計時器）
+  const isStarted = ref(false)
+  const isFinished = ref(false)
+  const elapsed = ref(0)       // 實時經過秒數
+  const finalElapsed = ref(0)  // 最終總用時（秒）
+  const startTime = ref(null)
+  const endTime = ref(null)
+  let timer = null             // 定時器
 
-	function startTyping() {
-		isStarted.value = true
-		isFinished.value = false   // 打字開始，自然不是結束
-	}
+  const duration = computed(() => finalElapsed.value || elapsed.value)
 
-	function stopTyping() {
-		isStarted.value = false
-		isFinished.value = true    // 停止時表示結束了
-		elapsed.value = 0
-	}
+  function startTyping() {
+    if (isStarted.value) return  // 避免重複啟動
+    isStarted.value = true
+    isFinished.value = false
+    startTime.value = Date.now()
+    elapsed.value = 0
+    finalElapsed.value = 0
 
-	function finishTyping() {
-		isFinished.value = true    // 顯式結束（輸入完呼叫）
-		isStarted.value = false
-	}
+    timer = setInterval(() => {
+      elapsed.value = Math.floor((Date.now() - startTime.value) / 1000)
+    }, 1000)
+  }
 
-	return { isStarted, isFinished, elapsed, startTyping, stopTyping, finishTyping }
+  function stopTyping() {
+    if (!isStarted.value) return
+    isStarted.value = false
+    isFinished.value = true
+    endTime.value = Date.now()
+    finalElapsed.value = elapsed.value
+    clearInterval(timer)
+    timer = null
+  }
+
+  function reset() {
+    isStarted.value = false
+    isFinished.value = false
+    startTime.value = null
+    endTime.value = null
+    elapsed.value = 0
+    finalElapsed.value = 0
+    if (timer) {
+      clearInterval(timer)
+      timer = null
+    }
+  }
+
+  return { isStarted, isFinished, elapsed, finalElapsed, duration, startTyping, stopTyping, reset }
 })
