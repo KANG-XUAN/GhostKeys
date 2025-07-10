@@ -44,6 +44,7 @@ onUnmounted(() => {
 	background-image:
 		repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.02), rgba(0, 0, 0, 0.02) 1px, transparent 1px, transparent 24px),
 		url('https://www.transparenttextures.com/patterns/paper-fibers.png');
+	/* This is mostly intended for prototyping; please download the pattern and re-host for production environments. Thank you! */
 	background-size: contain;
 	padding: 2rem;
 	border: 2px solid #d8bfa4;

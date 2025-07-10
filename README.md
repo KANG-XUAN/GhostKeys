@@ -6,6 +6,10 @@
 
 GhostKeys 是一款用 Vue 3 + Pinia 開發的打字練習應用，結合即時錯誤提示、計時功能與多語言切換，讓你在愉快的遊戲體驗中提升盲打技能。
 
+## 授權
+Background pattern by [TransparentTextures.com](https://www.transparenttextures.com) – Licensed under [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/)
+
+
 ## 功能特色
 
 - **多語言切換**：支援英文與中文介面自由切換

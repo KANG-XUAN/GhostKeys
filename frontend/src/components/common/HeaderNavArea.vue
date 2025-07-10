@@ -107,15 +107,15 @@ onUnmounted(() => clearInterval(timer))
   top: 0;
   left: 0;
   width: 100vw;
-  background-color: #1e1e2f;
-  /* 深底色 */
+  background-color: #121221;
+  background-image: url("https://www.transparenttextures.com/patterns/snow.png");
+  /* This is mostly intended for prototyping; please download the pattern and re-host for production environments. Thank you! */
   z-index: 99;
   box-sizing: border-box;
 }
 
 /* 導航列本體（內含兩個按鈕） */
 .nav-bar {
-  background-color: #1e1e2f;
   padding: 0.5rem 0;
   height: 60px;
   display: flex;

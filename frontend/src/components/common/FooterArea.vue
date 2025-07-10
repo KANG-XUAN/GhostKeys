@@ -40,6 +40,8 @@ const currentYear = new Date().getFullYear()
   font-size: 0.9rem;
   color: #495057;
   background-color: #f0f2f5;
+  background-image: url("https://www.transparenttextures.com/patterns/shattered-dark.png");
+  /* This is mostly intended for prototyping; please download the pattern and re-host for production environments. Thank you! */
   box-shadow: inset 0 1px 3px rgb(0 0 0 / 0.1);
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   padding: 1rem 1.5rem;

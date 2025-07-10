@@ -46,7 +46,8 @@
 							<p><strong>🔧 符號 / 表情：</strong></p>
 							<ul>
 								<li><kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>,</kbd> → 開啟符號選單（中文輸入法）</li>
-								<li><kbd>Win</kbd> + <kbd>.</kbd> <strong>|或|</strong> <kbd>Win</kbd> + <kbd>;</kbd> → 開啟 Emoji 面板
+								<li><kbd>Win</kbd> + <kbd>.</kbd> <strong>|或|</strong> <kbd>Win</kbd> + <kbd>;</kbd> →
+									開啟 Emoji 面板
 								</li>
 							</ul>
 							<p><strong>🈷️ 中文標點符號打法：</strong></p>
@@ -57,7 +58,8 @@
 									→ 輸入對應的全形標點（如「、」「。」...）
 								</li>
 								<li>
-									<kbd>Ctrl</kbd> + <kbd>[</kbd> <strong>|或|</strong> <kbd>Ctrl</kbd> + <kbd>]</kbd><br>
+									<kbd>Ctrl</kbd> + <kbd>[</kbd> <strong>|或|</strong> <kbd>Ctrl</kbd> +
+									<kbd>]</kbd><br>
 									→ 用方向鍵 <kbd>↓</kbd> 切換常用中文括號
 								</li>
 							</ul>
@@ -148,7 +150,8 @@
 						<div v-else-if="currentPage === 8">
 							<h3>📙 基礎指法 5：下列延伸（小指＋環指）</h3>
 							<p><strong>新增鍵：</strong>
-								<kbd>Z</kbd> <kbd>X</kbd> || <kbd>/</kbd> <kbd>.</kbd></p>
+								<kbd>Z</kbd> <kbd>X</kbd> || <kbd>/</kbd> <kbd>.</kbd>
+							</p>
 							<p><strong>對應手指：</strong></p>
 							<ul>
 								<li>左小指：<kbd>Z</kbd>　左環指：<kbd>X</kbd></li>
@@ -165,7 +168,8 @@
 						<div v-else-if="currentPage === 9">
 							<h3>📙 基礎指法 6：下列延伸（中指＋食指）</h3>
 							<p><strong>新增鍵：</strong>
-								<kbd>C</kbd> <kbd>V</kbd> || <kbd>,</kbd> <kbd>M</kbd></p>
+								<kbd>C</kbd> <kbd>V</kbd> || <kbd>,</kbd> <kbd>M</kbd>
+							</p>
 							<p><strong>對應手指：</strong></p>
 							<ul>
 								<li>左中指：<kbd>C</kbd>　左食指：<kbd>V</kbd></li>
@@ -238,6 +242,7 @@ const nextPage = () => {
 			/* 接下來都是透明的，直到24px為止 */
 		),
 		url('https://www.transparenttextures.com/patterns/paper-fibers.png');
+	/* This is mostly intended for prototyping; please download the pattern and re-host for production environments. Thank you! */
 	background-size: contain;
 	padding: 2rem;
 	border: 2px solid #d8bfa4;

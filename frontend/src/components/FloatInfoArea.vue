@@ -181,7 +181,9 @@ const scrollToTop = () => {
 }
 
 .info-area {
-	background: #f8f9fa;
+	background-color: #ffffff;
+background-image: url("https://www.transparenttextures.com/patterns/arches.png");
+/* This is mostly intended for prototyping; please download the pattern and re-host for production environments. Thank you! */
 	padding: 1rem;
 	border-radius: 0.5rem;
 	border: 1px solid #dee2e6;

@@ -1,7 +1,9 @@
 <template>
   <div class="position-relative mb-4">
     <!-- 已開始打字時：顯示遮罩避免操作切換 -->
-    <div v-if="typingStore.isStarted" class="overlay-block"></div>
+    <div v-if="typingStore.isStarted" class="overlay-block">
+      <img src="@/assets/overlay-block.png" alt="Logo" class="overlay-logo" />
+    </div>
 
     <!-- 標題 + 隨機模式切換 -->
     <div class="d-flex justify-content-between align-items-center mb-3 mt-3">
@@ -52,8 +54,8 @@
       </div>
 
       <!-- 只有啟用 CapsLock 才顯示大寫比例設定 -->
-      <div v-if="typingStatus.selectedKeys.has('CapsLock')" class="d-flex align-items-center ms-auto gap-2">
-        <label class="form-label mb-0" style="width: 100px;">大寫比例：</label>
+      <div v-if="typingStatus.selectedKeys.has('CapsLock') && isRandomMode" class="d-flex align-items-center ms-auto gap-2">
+        <label class="form-label mb-0" style="width: 100px;">大寫機率：</label>
         <input type="range" min="1" max="100" v-model.number="uppercaseRatio" class="form-range" />
         <span class="uppercase-ratio">{{ uppercaseRatio }}%</span>
       </div>
@@ -62,7 +64,7 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue'
+import { ref, watch, computed } from 'vue'
 import ArticleSelect from './ArticleSelect.vue'
 import RandomPracticeConfig from './RandomPracticeConfig.vue'
 import { useTypingStatusStore } from '@/stores/typingStatusStore'
@@ -78,7 +80,10 @@ const props = defineProps({
 const emit = defineEmits(['load-content'])
 
 // 是否為隨機模式（預設為 false）
-const isRandomMode = ref(false)
+const isRandomMode = computed({
+  get: () => typingStore.isRandomMode,
+  set: (val) => typingStore.isRandomMode = val
+})
 
 // 練習模式：完整（full）或限時（timed），預設為 full
 const practiceMode = ref('full')
@@ -127,10 +132,25 @@ watch([minutes, seconds], () => {
 .overlay-block {
   position: absolute;
   inset: 0;
-  background-color: rgba(0, 0, 0, 0.05);
+  background-color: rgba(0, 0, 0, 0.1);
   z-index: 10;
   cursor: not-allowed;
   border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  /* 置中水平 */
+  align-items: flex-start;
+  /* 預設靠上 */
+}
+
+.overlay-logo {
+  height: 100%;
+  /* 根據你的 LOGO 大小調整 */
+  opacity: 0.2;
+  /* 半透明 */
+  pointer-events: none;
+  /* 防止 LOGO 影響滑鼠事件 */
+  user-select: none;
 }
 
 /* 微調 switch 尺寸 */
@@ -143,10 +163,14 @@ watch([minutes, seconds], () => {
 }
 
 .uppercase-ratio {
-  display: inline-block;  /* 讓 span 可以設置寬度 */
-  width: 4rem;           /* 設定固定寬度 */
-  text-align: center;     /* 讓數字居中 */
-  white-space: nowrap;    /* 防止換行 */
+  display: inline-block;
+  /* 讓 span 可以設置寬度 */
+  width: 4rem;
+  /* 設定固定寬度 */
+  text-align: center;
+  /* 讓數字居中 */
+  white-space: nowrap;
+  /* 防止換行 */
 }
 
 /* 模式選擇區塊高度統一 */

@@ -4,6 +4,7 @@ import { ref, computed } from 'vue'
 export const useTypingStatusStore = defineStore('typingStatus', () => {
   const isStarted = ref(false)
   const isFinished = ref(false)
+  const isRandomMode = ref(false)
   const elapsed = ref(0)       // 實時經過秒數
   const finalElapsed = ref(0)  // 最終總用時（秒）
   const startTime = ref(null)
@@ -48,5 +49,15 @@ export const useTypingStatusStore = defineStore('typingStatus', () => {
     }
   }
 
-  return { isStarted, isFinished, elapsed, finalElapsed, duration, startTyping, stopTyping, reset }
+  return {
+    isStarted,
+    isFinished,
+    isRandomMode,
+    elapsed,
+    finalElapsed,
+    duration,
+    startTyping,
+    stopTyping,
+    reset
+  }
 })

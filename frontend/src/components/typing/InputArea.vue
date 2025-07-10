@@ -528,8 +528,9 @@ onUnmounted(() => {
 	letter-spacing: 0.1rem;
 	padding: 0.3rem 0.6rem;
 	background-color: #333;
-	border-radius: 5px;
+	border-radius: 10px 10px 0 0;
 	white-space: pre;
+	user-select: none;
 }
 
 .text-line span {
@@ -548,7 +549,7 @@ onUnmounted(() => {
 	letter-spacing: 0.1rem;
 	background-color: #fff;
 	color: #000;
-	border-radius: 5px;
+	border-radius: 0 0 10px 10px;
 	border: 1px solid #ccc;
 	width: 100%;
 	box-sizing: border-box;
@@ -559,7 +560,9 @@ onUnmounted(() => {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	background-color: #222;
+	background-color: #222222;
+	background-image: url("https://www.transparenttextures.com/patterns/stardust.png");
+	/* This is mostly intended for prototyping; please download the pattern and re-host for production environments. Thank you! */
 	color: #fff;
 	position: relative;
 	overflow: hidden;
@@ -567,6 +570,9 @@ onUnmounted(() => {
 
 .window-input {
 	padding: 0.8rem;
+	background-color: #f6f4e6;
+background-image: url("https://www.transparenttextures.com/patterns/paper.png");
+/* This is mostly intended for prototyping; please download the pattern and re-host for production environments. Thank you! */
 }
 
 .bg-lines {

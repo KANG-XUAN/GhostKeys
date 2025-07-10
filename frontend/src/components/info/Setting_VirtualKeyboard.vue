@@ -118,6 +118,7 @@ const handleDown = (key) => {
 
 const dragOver = (key) => {
 	if (!isDragging.value || !allowedKeys.includes(key)) return
+	if (key === 'CapsLock') return // 禁止滑過切換 CapsLock
 	const isSelected = selectedKeys.value.has(key)
 	const shouldSelect = dragMode.value === 'select'
 	if (shouldSelect !== isSelected) {
