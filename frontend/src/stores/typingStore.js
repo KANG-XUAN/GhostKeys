@@ -1,14 +1,19 @@
+// stores/typingStore.js
 import { defineStore } from 'pinia'
 import { ref, computed, watch } from 'vue'
+import { useSaveTextStore } from './saveTextStore'
+import { useBoolenStatusStore } from './boolenStatusStore'
 
 export const useTypingStore = defineStore('typing', () => {
-	const selectedKeys = ref(new Set())
-	const randomText = ref('')
-	const textLength = ref(200) // 文章長度
-	const uppercaseRatio = ref(50) // 可設定的大寫機率（1~100）
-	const isCapsLockOn = computed(() => selectedKeys.value.has('CapsLock'))
+	const { setRandomText } = useSaveTextStore()
+	const boolenStatus = useBoolenStatusStore()
 
-	// 可被選取的按鍵（英文字母 + 數字 + 符號鍵）
+	const selectedKeys = computed(() => boolenStatus.selectedKeys)
+	const isCapsLockOn = computed(() => boolenStatus.isCapsLockOn)
+
+	const textLength = ref(200)
+	const uppercaseRatio = ref(50)
+
 	const allowedKeys = [
 		...'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').map(l => 'Key' + l),
 		...Array.from({ length: 10 }, (_, i) => 'Digit' + i),
@@ -33,14 +38,16 @@ export const useTypingStore = defineStore('typing', () => {
 				if (k.startsWith('Digit')) return k.slice(5)
 				return symbolMap[k] || ''
 			})
-			.filter(l => l !== '')
+			.filter(Boolean)
 	)
 
-	function generateRandomText(length = 200) {
+	/**
+	 * 產生隨機文章文字（不做儲存，只回傳字串）
+	 */
+	function generateRandomText(length = textLength.value) {
 		const letters = selectedLetters.value
 		if (letters.length === 0) {
-			randomText.value = '(請先選取至少一個字母)'
-			return
+			return '(請先選取至少一個字母)'
 		}
 
 		let result = ''
@@ -54,7 +61,6 @@ export const useTypingStore = defineStore('typing', () => {
 				let letter = letters[randomIndex]
 
 				if (isCapsLockOn.value && /^[a-z]$/.test(letter)) {
-					// 根據設定機率轉成大寫
 					const ratio = uppercaseRatio.value / 100
 					letter = Math.random() < ratio ? letter.toUpperCase() : letter.toLowerCase()
 				}
@@ -64,47 +70,48 @@ export const useTypingStore = defineStore('typing', () => {
 			}
 			result += word + ' '
 		}
-		randomText.value = result.trim()
+		return result.trim()
 	}
 
+	function updateRandomPreview() {
+		const previewText = generateRandomText()
+		setRandomText(previewText)
+	}
+
+	/**
+	 * 根據字元反推回對應的 key name 並儲存（給外部用）
+	 */
 	function setSelectedLetters(letters) {
-		selectedKeys.value.clear()
+		const keys = []
 		letters.forEach(letter => {
 			if (/^[a-z]$/.test(letter)) {
-				selectedKeys.value.add('Key' + letter.toUpperCase())
+				keys.push('Key' + letter.toUpperCase())
 			} else if (/^[0-9]$/.test(letter)) {
-				selectedKeys.value.add('Digit' + letter)
+				keys.push('Digit' + letter)
 			} else {
 				const entry = Object.entries(symbolMap).find(([, val]) => val === letter)
-				if (entry) selectedKeys.value.add(entry[0])
+				if (entry) keys.push(entry[0])
 			}
 		})
+		boolenStatus.setSelectedKeys(keys)
 	}
 
 	watch([selectedLetters, textLength, uppercaseRatio], () => {
-		generateRandomText(textLength.value)
+		updateRandomPreview()
 	}, { immediate: true })
 
 	function toggleKey(key) {
 		if (!allowedKeys.includes(key)) return
-		if (selectedKeys.value.has(key)) {
-			selectedKeys.value.delete(key)
-		} else {
-			selectedKeys.value.add(key)
-		}
-		selectedKeys.value = new Set(selectedKeys.value)
+		boolenStatus.toggleKey(key)
 	}
 
 	return {
-		selectedKeys,
 		allowedKeys,
 		toggleKey,
-		randomText,
 		selectedLetters,
 		generateRandomText,
 		setSelectedLetters,
 		textLength,
-		isCapsLockOn,
 		uppercaseRatio,
 	}
 })

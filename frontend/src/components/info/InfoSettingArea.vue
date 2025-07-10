@@ -1,7 +1,7 @@
 <template>
-  <div class="position-relative mb-4">
+  <div class="position-relative mt-4 pt-2 pb-4 ">
     <!-- 已開始打字時：顯示遮罩避免操作切換 -->
-    <div v-if="typingStore.isStarted" class="overlay-block">
+    <div v-if="boolenStatus.isStartedEnter" class="overlay-block">
       <img src="@/assets/overlay-block.png" alt="Logo" class="overlay-logo" />
     </div>
 
@@ -14,7 +14,7 @@
       <!-- 切換隨機練習模式 -->
       <div class="form-check form-switch d-flex align-items-center">
         <input class="form-check-input toggle-switch" type="checkbox" id="modeToggle" v-model="isRandomMode"
-          :disabled="typingStore.isStarted" />
+          :disabled="boolenStatus.isStartedEnter" />
         <label class="form-check-label ms-3 fs-4" for="modeToggle">
           使用隨機練習
         </label>
@@ -22,7 +22,7 @@
     </div>
 
     <!-- 根據是否為隨機模式切換子元件 -->
-    <ArticleSelect v-if="!isRandomMode" :is-started="typingStore.isStarted"
+    <ArticleSelect v-if="!isRandomMode" :is-started="boolenStatus.isStartedEnter"
       @load-content="$emit('load-content', $event)" />
     <RandomPracticeConfig v-else />
 
@@ -31,30 +31,31 @@
       <!-- 完整模式 -->
       <div class="form-check d-flex align-items-center gap-2">
         <input class="form-check-input" type="radio" name="practiceMode" id="fullMode" value="full"
-          v-model="practiceMode" :disabled="typingStore.isStarted" />
+          v-model="practiceMode" :disabled="boolenStatus.isStartedEnter" />
         <label class="form-check-label mb-0" for="fullMode">完整模式（不限時間）</label>
       </div>
 
       <!-- 限時模式 -->
       <div class="form-check d-flex align-items-center gap-2">
         <input class="form-check-input" type="radio" name="practiceMode" id="timedMode" value="timed"
-          v-model="practiceMode" :disabled="typingStore.isStarted" />
+          v-model="practiceMode" :disabled="boolenStatus.isStartedEnter" />
         <label class="form-check-label mb-0" for="timedMode">限時模式（如 60 秒）</label>
 
         <!-- 限時模式時顯示時間輸入 -->
         <div v-if="practiceMode === 'timed'" class="d-flex gap-2 align-items-center ms-3">
           <label class="form-label mb-0">限時：</label>
           <input type="number" min="0" max="59" v-model.number="minutes" class="form-control form-control-sm"
-            style="width: 70px;" :disabled="typingStore.isStarted" />
+            style="width: 70px;" :disabled="boolenStatus.isStartedEnter" />
           <span>分</span>
           <input type="number" min="0" max="59" v-model.number="seconds" class="form-control form-control-sm"
-            style="width: 70px;" :disabled="typingStore.isStarted" />
+            style="width: 70px;" :disabled="boolenStatus.isStartedEnter" />
           <span>秒</span>
         </div>
       </div>
 
       <!-- 只有啟用 CapsLock 才顯示大寫比例設定 -->
-      <div v-if="typingStatus.selectedKeys.has('CapsLock') && isRandomMode" class="d-flex align-items-center ms-auto gap-2">
+      <div v-if="boolenStatus.selectedKeys.has('CapsLock') && isRandomMode"
+        class="d-flex align-items-center ms-auto gap-2">
         <label class="form-label mb-0" style="width: 100px;">大寫機率：</label>
         <input type="range" min="1" max="100" v-model.number="uppercaseRatio" class="form-range" />
         <span class="uppercase-ratio">{{ uppercaseRatio }}%</span>
@@ -69,20 +70,18 @@ import ArticleSelect from './ArticleSelect.vue'
 import RandomPracticeConfig from './RandomPracticeConfig.vue'
 import { useTypingStatusStore } from '@/stores/typingStatusStore'
 import { useTypingStore } from '@/stores/typingStore'
+import { useBoolenStatusStore } from '@/stores/boolenStatusStore.js'
 
 const typingStore = useTypingStatusStore()
 const typingStatus = useTypingStore()
-
-const props = defineProps({
-  isStarted: Boolean,
-})
+const boolenStatus = useBoolenStatusStore()
 
 const emit = defineEmits(['load-content'])
 
 // 是否為隨機模式（預設為 false）
 const isRandomMode = computed({
-  get: () => typingStore.isRandomMode,
-  set: (val) => typingStore.isRandomMode = val
+  get: () => boolenStatus.isRandomMode,
+  set: (val) => boolenStatus.isRandomMode = val
 })
 
 // 練習模式：完整（full）或限時（timed），預設為 full
@@ -132,10 +131,12 @@ watch([minutes, seconds], () => {
 .overlay-block {
   position: absolute;
   inset: 0;
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: rgba(0, 0, 0, 0.3);
+  background-image: url("https://www.transparenttextures.com/patterns/45-degree-fabric-light.png");
+  /* This is mostly intended for prototyping; please download the pattern and re-host for production environments. Thank you! */
   z-index: 10;
   cursor: not-allowed;
-  border-radius: 4px;
+  border-radius: 4px 4px 0 0;
   display: flex;
   justify-content: center;
   /* 置中水平 */

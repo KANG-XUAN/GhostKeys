@@ -38,10 +38,13 @@
 
 <script setup>
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
-import { useTypingStore } from '@/stores/typingStore.js'
 import MessageAlertArea from '@/components/common/MessageAlertArea.vue'
 
+import { useTypingStore } from '@/stores/typingStore.js'
+import { useBoolenStatusStore } from '@/stores/boolenStatusStore.js'
+
 const store = useTypingStore()
+const boolenStatusStore = useBoolenStatusStore()
 
 // 鍵位定義
 const row1 = ['Backquote', 'Digit1', 'Digit2', 'Digit3', 'Digit4', 'Digit5', 'Digit6', 'Digit7', 'Digit8', 'Digit9', 'Digit0', 'Minus', 'Equal', 'Backspace']
@@ -75,7 +78,7 @@ const isDragging = ref(false)
 const dragMode = ref(null)
 
 // 拿取狀態
-const selectedKeys = computed(() => store.selectedKeys)
+const selectedKeys = computed(() => boolenStatusStore.selectedKeys)
 const allowedKeys = store.allowedKeys
 
 // 顯示文字

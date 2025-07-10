@@ -5,7 +5,8 @@
 
 			<!-- 路徑選擇：main 或 models 下的資料夾 -->
 			<div class="col-3">
-				<select class="form-select" v-model="selectedPath" @change="handlePathChange" :disabled="isStarted">
+				<select class="form-select" v-model="selectedPath" @change="handlePathChange"
+					:disabled="boolenStatus.isStartedEnter">
 					<option value="main">指法練習</option>
 					<optgroup label="models">
 						<option v-for="folder in modelFolders" :key="folder" :value="`models/${folder}`">
@@ -18,7 +19,7 @@
 			<!-- 語言選擇：英文 / 中文 -->
 			<div class="col-2">
 				<select class="form-select" v-model="selectedLanguage" @change="handleLanguageChange"
-					:disabled="isStarted">
+					:disabled="boolenStatus.isStartedEnter">
 					<option value="en">English</option>
 					<option value="ch">中文</option>
 				</select>
@@ -26,7 +27,8 @@
 
 			<!-- 檔案選擇：根據路徑與語言動態載入 -->
 			<div class="col-7">
-				<select class="form-select" v-model="selectedFile" @change="previewFile" :disabled="isStarted">
+				<select class="form-select" v-model="selectedFile" @change="previewFile"
+					:disabled="boolenStatus.isStartedEnter">
 					<option disabled value="">請選擇文章</option>
 					<option v-for="file in availableFiles" :key="file" :value="file">
 						{{ file }}
@@ -51,18 +53,15 @@
 
 
 <script setup>
-import { ref, onMounted, watch, computed } from 'vue'
+import { ref, onMounted, watch, computed, nextTick } from 'vue'
 import { useLanguageStore } from '@/stores/languageStore'
 import { useTypingStatusStore } from '@/stores/typingStatusStore'
 import { useFileStore } from '@/stores/fileStore'
 
-
-
-
-// 父層傳入的 props
-const props = defineProps({
-	isStarted: Boolean
-})
+import { useBoolenStatusStore } from '@/stores/boolenStatusStore.js'
+const boolenStatus = useBoolenStatusStore()
+import { useSaveTextStore } from '@/stores/saveTextStore.js'
+const saveTextStore = useSaveTextStore()
 
 // 發出事件（例如 emit('load-content', 內容)）
 const emit = defineEmits(['load-content'])
@@ -109,9 +108,10 @@ const selectedFile = computed({
 // 監聽：打字結束時重置畫面
 // --------------------------
 
-watch(() => typingStore.isFinished, (finished) => {
+watch(() => boolenStatus.isFinishedEnter, (finished) => {
 	if (finished) {
 		fileStore.clearSelection()
+		selectedFile.value = '' // ← 清掉，保證選同檔案也會觸發 @change
 		fileContent.value = ''
 		showModal.value = false
 	}
@@ -181,8 +181,6 @@ const updateAvailableFiles = () => {
 // --------------------------
 
 const previewFile = async () => {
-	if (!selectedFile.value) return
-
 	const path = selectedPath.value
 	const lang = selectedLanguage.value
 	const fileName = selectedFile.value
@@ -205,8 +203,10 @@ const cancelModal = () => {
 	fileStore.selectedFile = ''
 }
 
-const confirmContent = () => {
-	emit('load-content', fileContent.value)
+const confirmContent = async () => {
+	saveTextStore.setCurrentText('')
+	await nextTick() // 等待 DOM & reactivity 更新
+	saveTextStore.setFileText(fileContent.value)
 	showModal.value = false
 }
 </script>

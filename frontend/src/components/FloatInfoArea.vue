@@ -26,7 +26,7 @@
 					<div class="info-card position-relative p-3 shadow-sm rounded bg-white text-center">
 
 						<!-- 若尚未開始打字，顯示提示遮罩 -->
-						<div v-if="!typingStore.isStarted" class="overlay">
+						<div v-if="!boolenStatus.isStartedEnter" class="overlay">
 							<p class="text-muted">選擇文章後 => 輸入任意鍵開始計時</p>
 						</div>
 
@@ -54,18 +54,20 @@ import VirtualKeyboard from '@/components/VirtualKeyboard.vue'
 import TransitionAlertArea from './TransitionAlertArea.vue'
 // import TransitionAlertArea from '@/components/common/TransitionAlertArea.vue'
 import { useTypingStatusStore } from '@/stores/typingStatusStore'
-import { useKeyboardStore } from '@/stores/keyboardStore.js'
+import { useBoolenStatusStore } from '@/stores/boolenStatusStore.js'
 
 
 // 狀態管理：打字進度與虛擬鍵盤開關
-const typingStore = useTypingStatusStore()
-const keyboardStore = useKeyboardStore()
+const typingStatusStore = useTypingStatusStore()
+const boolenStatus = useBoolenStatusStore()
 
 // 父元件傳入的 props（錯誤字數與輸入字數）
 const props = defineProps({
 	errorCount: Number,
 	inputCount: Number,
 })
+
+const elapsed = computed(() => typingStatusStore.duration)
 
 // 虛擬鍵盤浮窗是否開啟
 const isFloatingOpen = ref(false)
@@ -83,14 +85,14 @@ const toggleFloating = () => {
 	isFloatingOpen.value = !isFloatingOpen.value
 
 	if (isFloatingOpen.value) {
-		keyboardStore.toggleKeyboard()
+		boolenStatus.toggleKeyboardOpen()
 
 		// 打開後稍微滾動視窗，確保可見
 		setTimeout(() => {
 			window.scrollBy({ top: 200, behavior: 'smooth' })
 		}, 50)
 	} else {
-		keyboardStore.toggleKeyboard()
+		boolenStatus.toggleKeyboardOpen()
 
 		// 關閉後滾回來
 		// setTimeout(() => {
@@ -98,24 +100,6 @@ const toggleFloating = () => {
 		// }, 50)
 	}
 }
-
-// 計時秒數
-const elapsed = ref(0)
-let timer = null
-
-/**
- * 監聽是否開始打字
- * - 開始時啟動每秒+1 的計時器
- * - 停止時清除計時器並重置時間
- */
-watch(() => typingStore.isStarted, (newVal) => {
-	if (newVal) {
-		timer = setInterval(() => elapsed.value++, 1000)
-	} else {
-		clearInterval(timer)
-		elapsed.value = 0
-	}
-})
 
 /**
  * 計算打字速度（CPM, 每分鐘輸入字數）
@@ -180,14 +164,31 @@ const scrollToTop = () => {
 	}
 }
 
+.info-card {
+	height: 98%;
+}
+
 .info-area {
 	background-color: #ffffff;
-background-image: url("https://www.transparenttextures.com/patterns/arches.png");
-/* This is mostly intended for prototyping; please download the pattern and re-host for production environments. Thank you! */
+	background-image: url("https://www.transparenttextures.com/patterns/arches.png");
+	/* This is mostly intended for prototyping; please download the pattern and re-host for production environments. Thank you! */
 	padding: 1rem;
 	border-radius: 0.5rem;
 	border: 1px solid #dee2e6;
 	box-shadow: 0 0 8px rgba(0, 0, 0, 0.15);
+}
+
+.overlay {
+	position: absolute;
+	inset: 0;
+	background-color: rgba(255, 255, 255, 0.85);
+	backdrop-filter: blur(2px);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 0.5rem;
+	height: 100%;
+	z-index: 10;
 }
 
 /* ========================

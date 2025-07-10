@@ -1,35 +1,38 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
+import { useBoolenStatusStore } from './boolenStatusStore'
 
 export const useTypingStatusStore = defineStore('typingStatus', () => {
-  const isStarted = ref(false)
-  const isFinished = ref(false)
-  const isRandomMode = ref(false)
-  const elapsed = ref(0)       // 實時經過秒數
-  const finalElapsed = ref(0)  // 最終總用時（秒）
+  const boolenStatus = useBoolenStatusStore()
+
+  const elapsed = ref(0)
+  const finalElapsed = ref(0)
   const startTime = ref(null)
   const endTime = ref(null)
-  let timer = null             // 定時器
+  let timer = null
 
   const duration = computed(() => finalElapsed.value || elapsed.value)
 
   function startTyping() {
-    if (isStarted.value) return  // 避免重複啟動
-    isStarted.value = true
-    isFinished.value = false
+    if (boolenStatus.isStartedEnter) return  // 避免重複啟動
+    console.log('[startTyping] 啟動了')
+
+    // clearInterval(timer) // ← 清掉保險
+    boolenStatus.isStartedEnter = true
+    boolenStatus.isFinishedEnter = false
     startTime.value = Date.now()
     elapsed.value = 0
     finalElapsed.value = 0
 
     timer = setInterval(() => {
-      elapsed.value = Math.floor((Date.now() - startTime.value) / 1000)
+      elapsed.value += 1
     }, 1000)
   }
 
   function stopTyping() {
-    if (!isStarted.value) return
-    isStarted.value = false
-    isFinished.value = true
+    if (!boolenStatus.isStartedEnter) return
+    boolenStatus.isStartedEnter = false
+    boolenStatus.isFinishedEnter = true
     endTime.value = Date.now()
     finalElapsed.value = elapsed.value
     clearInterval(timer)
@@ -37,8 +40,8 @@ export const useTypingStatusStore = defineStore('typingStatus', () => {
   }
 
   function reset() {
-    isStarted.value = false
-    isFinished.value = false
+    boolenStatus.isStartedEnter = false
+    boolenStatus.isFinishedEnter = false
     startTime.value = null
     endTime.value = null
     elapsed.value = 0
@@ -50,9 +53,6 @@ export const useTypingStatusStore = defineStore('typingStatus', () => {
   }
 
   return {
-    isStarted,
-    isFinished,
-    isRandomMode,
     elapsed,
     finalElapsed,
     duration,

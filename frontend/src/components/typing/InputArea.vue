@@ -7,7 +7,7 @@
 		</div>
 
 		<!-- 輸入區：沒有背景動畫 -->
-		<div v-else-if="!typingStore.isFinished" class="window-input">
+		<div v-else-if="!boolenStatus.isFinishedEnter" class="window-input">
 			<div v-for="(line, index) in fullwidthLines" :key="index" class="line-group">
 				<div class="text-line">
 					<span v-for="(char, i) in line" :key="i"
@@ -61,14 +61,17 @@
 import { ref, watch, nextTick, computed, onUnmounted } from 'vue'
 import { useTypingStatusStore } from '@/stores/typingStatusStore'
 import { useLanguageStore } from '@/stores/languageStore'
+import { useBoolenStatusStore } from '@/stores/boolenStatusStore.js'
+import { useSaveTextStore } from '@/stores/saveTextStore'
 
 const typingStore = useTypingStatusStore()
 const languageStore = useLanguageStore()
+const boolenStatus = useBoolenStatusStore()
+const saveTextStore = useSaveTextStore()
 
 // ========================
 // 2. 屬性與狀態管理區
 // ========================
-const props = defineProps({ rawText: { type: String, default: '' } })
 const emit = defineEmits(['typing-start', 'update-error-count', 'update-input-count'])
 
 const fullwidthLines = ref([])
@@ -184,7 +187,7 @@ watch(
 /**
  * 監控 rawText 傳入新值時，重建打字練習所需的資料結構（斷行、全形轉換、初始化輸入區）
  */
-watch(() => props.rawText, (newVal) => {
+watch(() => saveTextStore.currentText, (newVal) => {
 	if (!newVal) {
 		fullwidthLines.value = []
 		inputLines.value = []
@@ -192,8 +195,8 @@ watch(() => props.rawText, (newVal) => {
 	}
 
 	// 重置狀態
-	typingStore.isStarted = false
-	typingStore.isFinished = false
+	boolenStatus.isStartedEnter = false
+	boolenStatus.isFinishedEnter = false
 	hasTyped.value = false
 
 	// 按語系處理斷行

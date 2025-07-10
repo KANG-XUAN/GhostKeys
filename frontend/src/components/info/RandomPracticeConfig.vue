@@ -12,7 +12,7 @@
 				<div class="input-group mb-2">
 					<span class="input-group-text">文章長度</span>
 					<input id="lengthInput" type="number" class="form-control form-control-sm"
-						v-model.number="store.textLength" @change="handleLengthChange" min="40" max="1000" />
+						v-model.number="typingStore.textLength" @change="handleLengthChange" min="40" max="1000" />
 					<span class="input-group-text">字</span>
 				</div>
 
@@ -35,7 +35,7 @@
 				<!-- 隨機文字展示區 -->
 				<!-- ⚠️ pre不能換行、縮排，不然框內會有TAB混入 -->
 				<pre class="random-text-box flex-grow-1" style="height: 207px;">
-{{ store.randomText }}</pre>
+{{ saveTextStore.randomText }}</pre>
 			</div>
 		</div>
 	</div>
@@ -43,13 +43,13 @@
 
 
 <script setup>
-import { ref } from 'vue'
+import { ref, nextTick } from 'vue'
 import VirtualKeyboard from '@/components/info/Setting_VirtualKeyboard.vue'
 import { useTypingStore } from '@/stores/typingStore.js'
-import { useRandomTextExportStore } from '@/stores/randomTextExportStore.js'
+import { useSaveTextStore } from '@/stores/saveTextStore.js'
 
-const store = useTypingStore()
-const exportStore = useRandomTextExportStore()
+const typingStore = useTypingStore()
+const saveTextStore = useSaveTextStore()
 
 // 預設字母範本清單（名稱：按鍵陣列）
 const presets = {
@@ -82,19 +82,20 @@ const selectedPreset = ref('')
 const applyPreset = (name) => {
 	selectedPreset.value = name
 	const presetLetters = presets[name] || []
-	store.setSelectedLetters(presetLetters)
+	typingStore.setSelectedLetters(presetLetters)
 }
 
-// 確認使用隨機文章 → 寫入 exportStore
-const confirmText = () => {
-	exportStore.setConfirmedText(store.randomText)
-	console.log(store.randomText) // 可移除除錯用
+// 確認使用隨機文章
+const confirmText = async () => {
+	saveTextStore.setCurrentText('')
+	await nextTick()
+	saveTextStore.setCurrentText(saveTextStore.randomText)
 }
 
 // 輸入文章長度限制在 40～1000 字內
 const handleLengthChange = () => {
-	if (store.textLength < 40) store.textLength = 40
-	if (store.textLength > 1000) store.textLength = 1000
+	if (typingStore.textLength < 40) typingStore.textLength = 40
+	if (typingStore.textLength > 1000) typingStore.textLength = 1000
 }
 </script>
 

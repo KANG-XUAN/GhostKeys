@@ -8,10 +8,10 @@
     </div>
 
     <!-- 中央圓形按鈕（顯示 LOGO 或倒數計時） -->
-    <div class="center-circle" :class="{ ripple: typingStore.isStarted, active: typingStore.isStarted }"
+    <div class="center-circle" :class="{ ripple: boolenStatus.isStartedEnter, active: boolenStatus.isStartedEnter }"
       @click="toggleTyping">
       <!-- 若尚未開始練習，顯示 LOGO -->
-      <span v-if="!typingStore.isStarted" class="logo">GhostKeys</span>
+      <span v-if="!boolenStatus.isStartedEnter" class="logo">GhostKeys</span>
 
       <!-- 若已開始練習，顯示格式化時間 -->
       <span v-else class="timer-wrapper">
@@ -27,9 +27,11 @@
 import { computed, watch, onUnmounted } from 'vue'
 import { useTypingStatusStore } from '@/stores/typingStatusStore'
 import { useLanguageStore } from '@/stores/languageStore'
+import { useBoolenStatusStore } from '@/stores/boolenStatusStore.js'
 
 // 將打字狀態管理 store 引入組件
 const typingStore = useTypingStatusStore()
+const boolenStatus = useBoolenStatusStore()
 
 // 用來記錄 setInterval() 回傳的計時器 ID
 let timer = null
@@ -50,36 +52,9 @@ const displayTime = computed(() => {
  * 例如：85 秒 -> "01:25"
  */
 const formattedTime = computed(() => {
-  const minutes = Math.floor(typingStore.elapsed / 60)
-    .toString()
-    .padStart(2, '0')
-  const seconds = (typingStore.elapsed % 60).toString().padStart(2, '0')
+  const minutes = Math.floor(displayTime.value / 60).toString().padStart(2, '0')
+  const seconds = (displayTime.value % 60).toString().padStart(2, '0')
   return `${minutes}:${seconds}`
-})
-
-/**
- * 監聽 isStarted 狀態的變化：
- * - 當 isStarted 為 true 時啟動每秒更新的計時器
- * - 當 isStarted 為 false 時停止計時器並重置 elapsed 時間
- */
-watch(() => typingStore.isStarted, (started) => {
-  if (started) {
-    clearInterval(timer)  // 清除舊的計時器（如果有）
-    timer = setInterval(() => {
-      typingStore.elapsed++  // 每秒 +1
-
-      // 若為限時模式且已達時間上限，則自動停止
-      if (
-        typingStore.practiceMode === 'timed' &&
-        typingStore.elapsed >= typingStore.timeLimit
-      ) {
-        typingStore.stopTyping()
-      }
-    }, 1000)
-  } else {
-    clearInterval(timer)  // 停止計時
-    typingStore.elapsed = 0  // 重置時間
-  }
 })
 
 /**
@@ -88,7 +63,7 @@ watch(() => typingStore.isStarted, (started) => {
  * 若未開始則不進行任何動作（交由其他地方觸發開始）
  */
 function toggleTyping() {
-  if (typingStore.isStarted) {
+  if (boolenStatus.isStartedEnter) {
     typingStore.stopTyping()
   }
 }
