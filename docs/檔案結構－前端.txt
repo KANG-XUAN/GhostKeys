@@ -12,11 +12,11 @@ GhostKeys/
 │       │   ├── common/						# 共用元件，如頁首、頁尾、訊息提示等
 │       │   │   ├── FooterArea.vue				# 頁尾元件
 │       │   │   ├── HeaderNavArea.vue			# 頁首導覽元件
-│       │   │   └── TransitionAlertArea.vue		# 跳出提示元件
+│       │   │   └── MessageAlertArea.vue		# 通用遮罩浮窗元件
 │       │   │
 │       │   ├── info/						# 資訊設定與選擇元件
 │       │   │   ├── ArticleSelect.vue			# 文章選擇元件
-│       │   │   ├── InfoSettingArea.vue			# 設定區元件
+│       │   │   ├── InfoSettingArea.vue			# 設定區父元件
 │       │   │   ├── RandomPracticeConfig.vue	# 隨機練習設定元件
 │       │   │   └── Setting_VirtualKeyboard.vue	# 虛擬鍵盤設定元件
 │       │   │
@@ -24,6 +24,7 @@ GhostKeys/
 │       │   │   └── InputArea.vue				# 輸入區元件
 │       │   │
 │       │   ├── FloatInfoArea.vue		# 浮動資訊區元件（例如提示或統計）
+│       │   ├── TransitionAlertArea.vue	# 浮窗提示元件
 │       │   └── VirtualKeyboard.vue		# 虛擬鍵盤元件
 │       │
 │       ├── stores/						# Pinia 狀態管理檔案

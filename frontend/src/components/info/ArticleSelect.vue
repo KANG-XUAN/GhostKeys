@@ -207,6 +207,11 @@ const confirmContent = async () => {
 	saveTextStore.setCurrentText('')
 	await nextTick() // 等待 DOM & reactivity 更新
 	saveTextStore.setFileText(fileContent.value)
+
+	// 設定捲動條位置（向下移動到輸入區）
+	window.scrollTo({ top: 500, behavior: 'smooth' })
+
+	// 預覽視窗關閉
 	showModal.value = false
 }
 </script>
@@ -225,8 +230,16 @@ const confirmContent = async () => {
 
 /* Modal 本體樣式 */
 .modal-box {
-	background: white;
+	background: #fdf6e3;
+	background-image:
+		repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.02), rgba(0, 0, 0, 0.02) 1px, transparent 1px, transparent 24px),
+		url('https://www.transparenttextures.com/patterns/paper-fibers.png');
+	/* This is mostly intended for prototyping; please download the pattern and re-host for production environments. Thank you! */
+	background-size: contain;
 	padding: 2rem;
+	border: 2px solid #d8bfa4;
+	border-radius: 12px;
+	color: #4b382a;
 	border-radius: 8px;
 	width: 90%;
 	max-width: 600px;

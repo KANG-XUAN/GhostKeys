@@ -2,7 +2,7 @@
   <div class="position-relative mt-4 pt-2 pb-4 ">
     <!-- 已開始打字時：顯示遮罩避免操作切換 -->
     <div v-if="boolenStatus.isStartedEnter" class="overlay-block">
-      <img src="@/assets/overlay-block.png" alt="Logo" class="overlay-logo" />
+      <img src="@/assets/overlay-block.png" alt="" class="overlay-logo" />
     </div>
 
     <!-- 標題 + 隨機模式切換 -->

@@ -27,6 +27,7 @@
 
 						<!-- 若尚未開始打字，顯示提示遮罩 -->
 						<div v-if="!boolenStatus.isStartedEnter" class="overlay">
+							<img src="@/assets/overlay-block.png" alt="Overlay" class="overlay-img" />
 							<p class="text-muted">選擇文章後 => 輸入任意鍵開始計時</p>
 						</div>
 
@@ -181,15 +182,75 @@ const scrollToTop = () => {
 .overlay {
 	position: absolute;
 	inset: 0;
-	background-color: rgba(255, 255, 255, 0.85);
-	backdrop-filter: blur(2px);
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	border-radius: 0.5rem;
 	height: 100%;
 	z-index: 10;
+	overflow: hidden;
+
+	background-color: rgba(255, 255, 255, 0.85);
+	background-image: url("https://www.transparenttextures.com/patterns/45-degree-fabric-light.png");
+	/* This is mostly intended for prototyping; please download the pattern and re-host for production environments. Thank you! */
+	backdrop-filter: blur(2px);
 }
+
+/* 遮罩圖片樣式 */
+.overlay-img {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 80%;
+	height: 80%;
+	object-fit: contain;
+	object-position: center;
+	opacity: 0.15;
+	pointer-events: none;
+	z-index: 1;
+}
+
+
+/* 內容 z-index 提升 */
+.overlay>*:not(.overlay-img) {
+	position: relative;
+	z-index: 2;
+}
+
+.text-muted {
+	color: #66ccff;
+	font-weight: bold;
+	font-size: 1.1rem;
+	font-family: 'Courier New', monospace;
+	text-align: center;
+	text-shadow:
+		0 0 4px #33bbff,
+		0 0 8px #33bbff,
+		0 0 12px #33bbff,
+		0 0 24px #33bbff;
+	animation: neonPulseCold 2.5s infinite alternate;
+}
+
+@keyframes neonPulseCold {
+	from {
+		text-shadow:
+			0 0 4px #33bbff,
+			0 0 8px #33bbff,
+			0 0 12px #33bbff,
+			0 0 24px #33bbff;
+	}
+
+	to {
+		text-shadow:
+			0 0 6px #66ddff,
+			0 0 14px #66ddff,
+			0 0 20px #66ddff,
+			0 0 32px #66ddff;
+	}
+}
+
+
 
 /* ========================
    漂浮按鈕樣式（右下角）

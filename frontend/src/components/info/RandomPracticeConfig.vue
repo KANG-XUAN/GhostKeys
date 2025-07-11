@@ -9,15 +9,15 @@
 			<!-- 中間：預設按鍵方案 + 長度設定 (col-3) -->
 			<div class="col-3">
 				<!-- 文章長度設定 -->
-				<div class="input-group mb-2">
-					<span class="input-group-text">文章長度</span>
+				<div class="input-group">
+					<span class="input-group-text input-group-text-left">文章長度</span>
 					<input id="lengthInput" type="number" class="form-control form-control-sm"
 						v-model.number="typingStore.textLength" @change="handleLengthChange" min="40" max="1000" />
-					<span class="input-group-text">字</span>
+					<span class="input-group-text input-group-text-right">字</span>
 				</div>
 
 				<!-- 預設按鍵方案清單 -->
-				<div class="list-group preset-list overflow-auto" style="max-height: 205px;">
+				<div class="list-group preset-list overflow-auto">
 					<button v-for="(letters, name) in presets" :key="name" @click="applyPreset(name)"
 						class="list-group-item list-group-item-action" :class="{ active: selectedPreset === name }">
 						{{ name }}
@@ -90,6 +90,9 @@ const confirmText = async () => {
 	saveTextStore.setCurrentText('')
 	await nextTick()
 	saveTextStore.setCurrentText(saveTextStore.randomText)
+
+	// 設定捲動條位置（向下移動到輸入區）
+	window.scrollTo({ top: 800, behavior: 'smooth' })
 }
 
 // 輸入文章長度限制在 40～1000 字內
@@ -110,8 +113,63 @@ const handleLengthChange = () => {
 	font-family: 'Courier New', Courier, monospace;
 }
 
+/* 針對 input-group 中的 span 設置樣式 */
+.input-group .input-group-text {
+	border-radius: 10px 10px 0 0;
+	/* 上圓角，下面無圓角 */
+	border: 2px solid #ccc;
+	border-bottom: 0.8px solid #ccc;
+	/* 邊框樣式，可以根據需要修改 */
+}
+
+.input-group-text-left {
+	border-right: 0 !important;
+}
+
+.input-group-text-right {
+	border-left: 0 !important;
+}
+
+/* 針對 input 設置無圓角 */
+.input-group .form-control {
+	border-radius: 0;
+	border-top: 2px solid #ccc;
+	border-bottom: 0.8px solid #ccc;
+}
+
+
+.list-group {
+	max-height: 213px;
+	border-radius: 0 0 6px 6px;
+	border: 1px solid #ccc;
+	/* 邊框樣式，可以根據需要修改 */
+}
+
+.list-group-item {
+	border-left: 0;
+}
+
 .preset-list button.active {
 	background-color: #0d6efd;
+	color: white;
+}
+
+/* 設定預設按鍵方案清單的底部圓角 */
+.preset-list {
+	border-radius: 0 0 0 10px;
+	/* 只對底部設圓角 */
+	border: 2px solid #ccc;
+	border-top: 0;
+	/* 邊框樣式 */
+	margin-bottom: 10px;
+	/* 預設按鍵清單和其他元素之間的間距 */
+}
+
+
+/* 使 active 按鈕的樣式更加明顯 */
+.preset-list .active {
+	background-color: #007bff;
+	/* 讓 active 按鈕背景顏色突出 */
 	color: white;
 }
 </style>

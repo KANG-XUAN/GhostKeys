@@ -32,7 +32,7 @@ import { ref, watch } from 'vue'
 import HeaderNavArea from '@/components/common/HeaderNavArea.vue'
 import FooterArea from '@/components/common/FooterArea.vue'
 import FloatInfoArea from '@/components/FloatInfoArea.vue'
-import InfoSettingArea from '@/components/info/InfoSettingArea.vue'
+import InfoSettingArea from '@/components/info/_InfoSettingArea.vue'
 import InputArea from '@/components/typing/InputArea.vue'
 
 // Pinia

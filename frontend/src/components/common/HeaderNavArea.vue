@@ -100,24 +100,47 @@ onUnmounted(() => clearInterval(timer))
 
 /* 導航列中的按鈕樣式 */
 .nav-btn {
-  background: transparent;
+  position: relative;
+  background: linear-gradient(90deg, #121221, #121221);
+  /* 基礎背景 */
   border: none;
   color: #f1f1f1;
   padding: 0.75rem;
   font-weight: 500;
   cursor: pointer;
   flex: 1;
-  transition: background-color 0.3s, color 0.3s, transform 0.15s;
+  overflow: hidden;
+  /* 確保背景不溢出 */
+  z-index: 0;
+  transition: color 0.3s, transform 0.15s;
 }
 
-/* 按鈕滑過時的特效：發光、放大 */
+/* 背景圖淡入動畫層 */
+.nav-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    url("https://www.transparenttextures.com/patterns/dark-mosaic.png"),
+    linear-gradient(90deg, #00d8ff, #0066ff);
+  background-size: auto;
+  background-repeat: repeat;
+  opacity: 0;
+  z-index: -1;
+  transition: opacity 0.3s ease;
+}
+
+/* 滑過時：背景圖淡入、字體變白、放大 */
 .nav-btn:hover {
-  /* 漸層背景 + 文字明顯變色 */
-  background: linear-gradient(90deg, #00d8ff, #0066ff);
   color: white;
   transform: scale(1.05);
   box-shadow: 0 0 8px #00d8ff;
 }
+
+.nav-btn:hover::before {
+  opacity: 1;
+}
+
 
 /* 中央圓形計時器按鈕 */
 .center-circle {
