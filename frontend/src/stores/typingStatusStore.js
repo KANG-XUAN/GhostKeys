@@ -9,6 +9,8 @@ export const useTypingStatusStore = defineStore('typingStatus', () => {
   const finalElapsed = ref(0)
   const startTime = ref(null)
   const endTime = ref(null)
+  const timeLimit = ref(60) // 預設 60 秒
+  const practiceMode = ref('full') // 'full' 或 'timed'
   let timer = null
 
   const duration = computed(() => finalElapsed.value || elapsed.value)
@@ -26,6 +28,11 @@ export const useTypingStatusStore = defineStore('typingStatus', () => {
 
     timer = setInterval(() => {
       elapsed.value += 1
+
+      // 🕒 如果是限時模式，且時間到了，就自動結束
+      if (practiceMode.value === 'timed' && elapsed.value >= timeLimit.value) {
+        stopTyping()
+      }
     }, 1000)
   }
 
@@ -56,6 +63,8 @@ export const useTypingStatusStore = defineStore('typingStatus', () => {
     elapsed,
     finalElapsed,
     duration,
+    timeLimit,
+    practiceMode,
     startTyping,
     stopTyping,
     reset
