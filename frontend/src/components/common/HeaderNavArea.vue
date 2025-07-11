@@ -4,7 +4,7 @@
     <div class="nav-bar d-flex text-center align-items-center">
       <!-- 切換模式的按鈕（暫無綁定功能） -->
       <button class="flex-fill nav-btn">打字練習</button>
-      <button class="flex-fill nav-btn">基礎教學</button>
+      <button class="flex-fill nav-btn">　</button>
     </div>
 
     <!-- 中央圓形按鈕（顯示 LOGO 或倒數計時） -->

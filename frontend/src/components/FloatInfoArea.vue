@@ -89,9 +89,9 @@ const toggleFloating = () => {
 		boolenStatus.toggleKeyboardOpen()
 
 		// 打開後稍微滾動視窗，確保可見
-		setTimeout(() => {
-			window.scrollBy({ top: 200, behavior: 'smooth' })
-		}, 50)
+		// setTimeout(() => {
+		// 	window.scrollBy({ top: 200, behavior: 'smooth' })
+		// }, 50)
 	} else {
 		boolenStatus.toggleKeyboardOpen()
 

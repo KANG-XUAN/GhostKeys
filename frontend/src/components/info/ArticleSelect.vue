@@ -5,7 +5,7 @@
 
 			<!-- 路徑選擇：main 或 models 下的資料夾 -->
 			<div class="col-3">
-				<select class="form-select" v-model="selectedPath" @change="handlePathChange"
+				<select class="form-select ms-3" v-model="selectedPath" @change="handlePathChange"
 					:disabled="boolenStatus.isStartedEnter">
 					<option value="main">指法練習</option>
 					<optgroup label="models">
@@ -18,7 +18,7 @@
 
 			<!-- 語言選擇：英文 / 中文 -->
 			<div class="col-2">
-				<select class="form-select" v-model="selectedLanguage" @change="handleLanguageChange"
+				<select class="form-select ms-2" v-model="selectedLanguage" @change="handleLanguageChange"
 					:disabled="boolenStatus.isStartedEnter">
 					<option value="en">English</option>
 					<option value="ch">中文</option>
@@ -208,11 +208,11 @@ const confirmContent = async () => {
 	await nextTick() // 等待 DOM & reactivity 更新
 	saveTextStore.setFileText(fileContent.value)
 
-	// 設定捲動條位置（向下移動到輸入區）
-	window.scrollTo({ top: 500, behavior: 'smooth' })
-
 	// 預覽視窗關閉
 	showModal.value = false
+
+	// 設定捲動條位置（向下移動到輸入區）
+	window.scrollTo({ top: 1000 })
 }
 </script>
 

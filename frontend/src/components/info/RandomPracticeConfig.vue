@@ -92,7 +92,7 @@ const confirmText = async () => {
 	saveTextStore.setCurrentText(saveTextStore.randomText)
 
 	// 設定捲動條位置（向下移動到輸入區）
-	window.scrollTo({ top: 800, behavior: 'smooth' })
+	window.scrollTo({ top: 1000 })
 }
 
 // 輸入文章長度限制在 40～1000 字內
@@ -140,7 +140,7 @@ const handleLengthChange = () => {
 
 
 .list-group {
-	max-height: 213px;
+	max-height: 220px;
 	border-radius: 0 0 6px 6px;
 	border: 1px solid #ccc;
 	/* 邊框樣式，可以根據需要修改 */
@@ -183,7 +183,7 @@ const handleLengthChange = () => {
 	overflow: hidden;
 	background-color: #fff;
 	padding: 0;
-	height: 251px;
+	height: 258px;
 }
 
 .text-preview-box .btn-success {

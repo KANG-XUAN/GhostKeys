@@ -281,6 +281,13 @@ const focusNext = async (index) => {
 	if (index + 1 < total) {
 		// 還有下一行，自動聚焦
 		inputRefs.value[index + 1]?.focus()
+
+		// 視窗向下平滑移動 100px（你可以自行調整距離）
+		window.scrollBy({
+			top: 108,
+			left: 0,
+			behavior: 'smooth'
+		})
 	} else if ((inputLines.value[index] || '').trim()) {
 		// 最後一行輸入完畢，詢問是否結束
 		const confirmed = window.confirm('已輸入最後一行，要結束打字嗎？')
@@ -575,8 +582,8 @@ onUnmounted(() => {
 .window-input {
 	padding: 0.8rem;
 	background-color: #f6f4e6;
-background-image: url("https://www.transparenttextures.com/patterns/paper.png");
-/* This is mostly intended for prototyping; please download the pattern and re-host for production environments. Thank you! */
+	background-image: url("https://www.transparenttextures.com/patterns/paper.png");
+	/* This is mostly intended for prototyping; please download the pattern and re-host for production environments. Thank you! */
 }
 
 .bg-lines {

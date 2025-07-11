@@ -7,7 +7,7 @@
 
     <!-- 標題 + 隨機模式切換 -->
     <div class="d-flex justify-content-between align-items-center mb-3 mt-3">
-      <h2 class="text-lg fw-bold mb-0">
+      <h2 class="text-lg fw-bold mb-0 ms-3">
         {{ isRandomMode ? '隨機練習設定' : '文章選擇' }}
       </h2>
 
@@ -27,7 +27,7 @@
     <RandomPracticeConfig v-else />
 
     <!-- 練習模式選擇（完整 / 限時）與限時時間設定 -->
-    <div class="mode-options mt-4 d-flex align-items-center gap-4 flex-wrap">
+    <div class="mode-options mt-4 ms-3 d-flex align-items-center gap-4 flex-wrap">
       <!-- 完整模式 -->
       <div class="form-check d-flex align-items-center gap-2">
         <input class="form-check-input" type="radio" name="practiceMode" id="fullMode" value="full"
@@ -125,12 +125,12 @@ watch([minutes, seconds], () => {
   border-radius: 40px 40px 0 0;
   background-image:
     /* rgba(...) 不能直接當 background-image 的值。它必須包裝成一個漸層 */
-    linear-gradient(rgba(231, 255, 194, 0.1), rgba(231, 255, 194, 0.1)),
-    url("https://www.transparenttextures.com/patterns/xv.png");
+    linear-gradient(rgba(255, 237, 158, 0.545), rgba(255, 237, 158, 0.545)),
+    url("https://www.transparenttextures.com/patterns/type.png");
   background-blend-mode: multiply;
   padding: 0 10px;
 
-  box-shadow: inset 0 -10px 10px -5px rgba(0, 0, 0, 0.1);
+  box-shadow: inset 0 -30px 20px -5px rgba(0, 0, 0, 0.2);
 }
 
 /* 隨機開關樣式 */
@@ -149,7 +149,7 @@ watch([minutes, seconds], () => {
   /* This is mostly intended for prototyping; please download the pattern and re-host for production environments. Thank you! */
   z-index: 10;
   cursor: not-allowed;
-  border-radius: 20px 20px 0 0;
+  border-radius: 40px 40px 0 0;
   display: flex;
   justify-content: center;
   /* 置中水平 */

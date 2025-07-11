@@ -155,6 +155,9 @@ defineExpose({
 	display: inline-block;
 	user-select: none;
 	font-family: 'Courier New', Courier, monospace;
+	background-color: #f8f9fa;
+	border-radius: 10px;
+	border: 2px solid #ccc;
 }
 
 .keyboard-row {
