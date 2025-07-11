@@ -193,7 +193,7 @@ defineExpose({
 .key.active {
 	background-color: #0d6efd;
 	color: white;
-	box-shadow: 0 0 5px rgba(188, 187, 187, 0.6);
+	box-shadow: inset 0 1px 3px rgba(83, 81, 81, 0.6);
 }
 
 .key.tip-key {
@@ -221,7 +221,9 @@ defineExpose({
 	/* 開啟時的背景色 */
 	color: #ffffff;
 	/* 開啟時文字顏色 */
-	box-shadow: 0 0 5px rgba(56, 142, 108, 0.8);
+	box-shadow:
+		inset 0 1px 3px rgba(83, 81, 81, 0.6),
+		0 0 5px rgba(56, 142, 108, 0.8);
 	/* 開啟時的陰影效果 */
 	transform: scale(1.0);
 	/* 開啟時輕微放大 */

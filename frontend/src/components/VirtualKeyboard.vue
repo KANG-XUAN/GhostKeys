@@ -239,7 +239,7 @@ onBeforeUnmount(() => {
 	/* 垂直置中 */
 	font-weight: bold;
 	border: 1px solid #ccc;
-	transition: background 0.2s, box-shadow 0.2s;
+	transition: background-color 0.2s, box-shadow 0.2s;
 	box-sizing: border-box;
 }
 
@@ -247,7 +247,9 @@ onBeforeUnmount(() => {
 .key.active {
 	background-color: #007bff !important;
 	color: white;
-	box-shadow: 0 0 5px #007bff;
+	box-shadow:
+		0 0 5px #007bff,
+		inset 0 1px 3px rgba(83, 81, 81, 0.6);
 }
 
 /* 手指顏色區塊 */
