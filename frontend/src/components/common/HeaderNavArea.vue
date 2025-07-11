@@ -101,7 +101,7 @@ onUnmounted(() => clearInterval(timer))
 /* 導航列中的按鈕樣式 */
 .nav-btn {
   position: relative;
-  background: linear-gradient(90deg, #121221, #121221);
+  background-color: transparent;
   /* 基礎背景 */
   border: none;
   color: #f1f1f1;
@@ -150,7 +150,9 @@ onUnmounted(() => clearInterval(timer))
   transform: translateX(-50%);
   width: 100px;
   height: 100px;
-  background-color: #343a40;
+  background-color: #545d66;
+background-image: url("https://www.transparenttextures.com/patterns/diagmonds.png");
+/* This is mostly intended for prototyping; please download the pattern and re-host for production environments. Thank you! */
   border-radius: 50%;
   color: white;
   font-weight: bold;
@@ -189,6 +191,7 @@ onUnmounted(() => clearInterval(timer))
 /* 啟動打字時的狀態：改為藍底並有發光特效 */
 .center-circle.active {
   background-color: #00d8ff;
+  background-image: none;
   box-shadow: 0 0 15px #00d8ff, 0 0 30px #00aaff;
 }
 
@@ -199,7 +202,7 @@ onUnmounted(() => clearInterval(timer))
 
 /* 滑過但尚未啟動時的 hover 效果 */
 .center-circle:hover:not(.active) {
-  background-color: #495057;
+  background-color: #289b9d;
 }
 
 /* LOGO 文字樣式 */

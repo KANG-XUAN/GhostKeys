@@ -120,6 +120,19 @@ watch([minutes, seconds], () => {
 </script>
 
 <style scoped>
+.position-relative {
+  /* background-color: #e7ffc2; */
+  border-radius: 40px 40px 0 0;
+  background-image:
+    /* rgba(...) 不能直接當 background-image 的值。它必須包裝成一個漸層 */
+    linear-gradient(rgba(231, 255, 194, 0.1), rgba(231, 255, 194, 0.1)),
+    url("https://www.transparenttextures.com/patterns/xv.png");
+  background-blend-mode: multiply;
+  padding: 0 10px;
+
+  box-shadow: inset 0 -10px 10px -5px rgba(0, 0, 0, 0.1);
+}
+
 /* 隨機開關樣式 */
 .toggle-switch {
   width: 3rem;
@@ -136,7 +149,7 @@ watch([minutes, seconds], () => {
   /* This is mostly intended for prototyping; please download the pattern and re-host for production environments. Thank you! */
   z-index: 10;
   cursor: not-allowed;
-  border-radius: 4px 4px 0 0;
+  border-radius: 20px 20px 0 0;
   display: flex;
   justify-content: center;
   /* 置中水平 */

@@ -25,10 +25,10 @@
 			<hr>
 			<ul>
 				<li>單擊任一按鍵 → 開 / 關該鍵位</li>
-				<li>按住左鍵不放 → 拖曳滑過多個鍵進行批量開 / 關</li>
-				<li>可用的按鍵有淺藍色背景，無效按鍵無法互動</li>
-				<li>已啟用的按鍵會變成深藍色</li>
-				<li>啟用 <kbd style="background-color:#f1f8e9; color: #388e3c;">Caps</kbd> 文章中便會大小寫混用</li>
+				<li>按住左鍵不放 → 拖曳滑過進行批量開 / 關</li>
+				<li>可用的 <kbd style="background-color:#d0e1ff; color: #000;">按鍵</kbd> 有淺藍色背景</li>
+				<li>已啟用的 <kbd style="background-color:#0d6efd; color: #FFF; box-shadow: none;">按鍵</kbd> 會變成深藍色</li>
+				<li>啟用 <kbd style="background-color:#e8f9d6; color: #388e3c;">Caps</kbd> 文章中便會大小寫混用</li>
 			</ul>
 		</MessageAlertArea>
 	</div>
@@ -168,25 +168,29 @@ defineExpose({
 	height: 40px;
 	margin: 3px;
 	border-radius: 5px;
-	background: #f1f1f1;
+	background-color: rgba(241, 241, 241, 1);
 	text-align: center;
 	line-height: 40px;
 	font-weight: bold;
 	border: 1px solid #ccc;
 	box-sizing: border-box;
 	cursor: default;
-	transition: background-color 0.2s;
+	transition:
+		background-color 0.2s ease,
+		color 0.2s ease,
+		box-shadow 0.2s ease,
+		transform 0.2s ease;
 }
 
 .key.clickable {
-	background-color: #e8f0fe;
+	background-color: #d0e1ff;
 	cursor: pointer;
 }
 
 .key.active {
-	background-color: #3d5afe;
+	background-color: #0d6efd;
 	color: white;
-	box-shadow: 0 0 5px rgba(61, 90, 254, 0.6);
+	box-shadow: 0 0 5px rgba(188, 187, 187, 0.6);
 }
 
 .key.tip-key {
@@ -201,7 +205,7 @@ defineExpose({
 }
 
 .key.capslock-key {
-	background-color: #f1f8e9;
+	background-color: #e8f9d6;
 	/* 預設背景色 */
 	color: #388e3c;
 	/* 預設文字顏色 */
@@ -214,9 +218,9 @@ defineExpose({
 	/* 開啟時的背景色 */
 	color: #ffffff;
 	/* 開啟時文字顏色 */
-	box-shadow: 0 0 12px rgba(56, 142, 108, 0.8);
+	box-shadow: 0 0 5px rgba(56, 142, 108, 0.8);
 	/* 開啟時的陰影效果 */
-	transform: scale(1.05);
+	transform: scale(1.0);
 	/* 開啟時輕微放大 */
 }
 

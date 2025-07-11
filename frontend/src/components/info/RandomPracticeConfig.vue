@@ -26,9 +26,9 @@
 			</div>
 
 			<!-- 右側：顯示隨機文字 + 確定按鈕 (col-2) -->
-			<div class="col-2 d-flex flex-column">
-				<div class="d-flex justify-content-between align-items-center mb-2">
-					<h5 class="mb-0">隨機文章展示</h5>
+			<div class="text-preview-box col-2 d-flex flex-column">
+				<div class="d-flex justify-content-between align-items-center line">
+					<h5 class="mb-0 ps-2">隨機文章展示</h5>
 					<button class="btn btn-success" @click="confirmText">確定</button>
 				</div>
 
@@ -107,6 +107,7 @@ const handleLengthChange = () => {
 .random-text-box {
 	background-color: #f8f9fa;
 	padding: 10px;
+	margin: 0;
 	border-radius: 5px;
 	white-space: pre-wrap;
 	overflow-y: auto;
@@ -115,7 +116,7 @@ const handleLengthChange = () => {
 
 /* 針對 input-group 中的 span 設置樣式 */
 .input-group .input-group-text {
-	border-radius: 10px 10px 0 0;
+	border-radius: 18px 0 0 0;
 	/* 上圓角，下面無圓角 */
 	border: 2px solid #ccc;
 	border-bottom: 0.8px solid #ccc;
@@ -156,7 +157,7 @@ const handleLengthChange = () => {
 
 /* 設定預設按鍵方案清單的底部圓角 */
 .preset-list {
-	border-radius: 0 0 0 10px;
+	border-radius: 0 0 0 18px;
 	/* 只對底部設圓角 */
 	border: 2px solid #ccc;
 	border-top: 0;
@@ -171,5 +172,26 @@ const handleLengthChange = () => {
 	background-color: #007bff;
 	/* 讓 active 按鈕背景顏色突出 */
 	color: white;
+}
+
+
+/* col2 隨機文章 */
+.text-preview-box {
+	border: 2px solid #ccc;
+	border-radius: 0 18px 18px 0;
+	/* 對應 col-3 的 preset-list：左下角圓角，這裡是右下角 */
+	overflow: hidden;
+	background-color: #fff;
+	padding: 0;
+	height: 251px;
+}
+
+.text-preview-box .btn-success {
+	border-radius: 0;
+}
+
+.text-preview-box .line {
+	height: 37px;
+	border-bottom: 0.8px solid #ccc;
 }
 </style>
