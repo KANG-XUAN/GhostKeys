@@ -2,9 +2,15 @@
 
 練習盲打，提升打字速度與準確度的趣味工具。
 
+
 ## 專案簡介
 
 GhostKeys 是一款用 Vue 3 + Pinia 開發的打字練習應用，結合即時錯誤提示、計時功能與多語言切換，讓你在愉快的遊戲體驗中提升盲打技能。
+
+
+## 授權
+Background pattern by [TransparentTextures.com](https://www.transparenttextures.com) – Licensed under [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/)
+
 
 ## 功能特色
 
@@ -13,7 +19,7 @@ GhostKeys 是一款用 Vue 3 + Pinia 開發的打字練習應用，結合即時�
 - **計時器**：開始打字即計時，結束可查看用時
 - **多段落練習**：依文章分行輸入，模擬真實盲打情境
 - **錯誤與輸入字數統計**：結算區顯示輸入字數、錯誤數與正確字數
-- **趣味遊戲模式**：除了純打字練習外，還有趣味遊戲關卡（可擴充）
+
 
 ## 技術棧
 
@@ -21,6 +27,7 @@ GhostKeys 是一款用 Vue 3 + Pinia 開發的打字練習應用，結合即時�
 - Pinia 狀態管理
 - Composition API
 - SCSS / CSS3
+
 
 ## 安裝與執行
 
@@ -30,40 +37,31 @@ git clone https://github.com/KANG-XUAN/GhostKeys.git
 cd GhostKeys
 ```
 
-2. 安裝依賴
-```
-npm install
-```
+2. 安裝依賴(僅需第一次)
+- 雙擊"自動_install.bat"便會自動安裝所需插件
 
 3. 啟動開發伺服器
-```
-npm run dev
-```
+- 雙擊"自動_啟動.bat"便會自動開啟前後端cmd
+- ⚠️ 如果"自動_啟動"無法正常出現前後端cmd，那麼請分別使用"自動_啟動前端"、"自動_啟動後端"即可分開啟動
 
 4. 在瀏覽器開啟
-```
-http://localhost:3000
-```
+- 找到前端的cmd => 複製顯示的網址貼到瀏覽器
 
 
 ## 專案結構
-```
-/src
-  /components      // Vue 元件
-  /stores          // Pinia 狀態管理
-  /assets          // 靜態資源
-  App.vue          // 主組件
-  main.js          // 入口文件
-```
+📁 查看完整 [檔案結構－前端](./docs/檔案結構－前端.txt)
+
 
 ## 使用說明
-- 在首頁選擇「打字練習」或「趣味遊戲」
+![GhostKeys 使用示意圖](docs/images/legend.png)
 - 選擇文章後，開始輸入，系統會即時偵測錯誤並計時
 - 完成後，結算區會顯示你的錯誤數與輸入統計
 - 點擊中央圓形計時器可以停止計時
 
+
 ## 作者
 KANG-XUAN
+
 
 ## 授權條款
 MIT License

@@ -1,0 +1,6 @@
+If you want to add new articles, just copy the "DEMO" folder. It already contains two language subfolders: en (English) and ch (Chinese).
+The difference is that English articles will automatically wrap by words without breaking them awkwardly, while Chinese articles will automatically add two spaces at the beginning of each paragraph to create an indentation effect. When writing in Chinese, pressing the TAB key will insert these two spaces for you.
+
+Of course, placing articles in the wrong folder is not a big problem—the system can still read them. However, the display might look a bit off; for example, if you put Chinese articles in the English folder or vice versa, the reading experience may be affected, but it won’t cause any errors.
+
+In short, just follow the format and folder structure of the "DEMO示範" folder to ensure the system reads everything correctly, preventing layout issues or messy displays.

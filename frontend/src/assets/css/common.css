@@ -1,0 +1,32 @@
+kbd,
+.key {
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	padding: 2px 6px;
+	font-size: 0.9em;
+	font-family: monospace;
+	box-shadow: 0 1px 0 #bbb;
+
+	/* background-image: url("https://www.transparenttextures.com/patterns/little-pluses.png"); */
+	/* background-image: url("https://www.transparenttextures.com/patterns/redox-01.png"); */
+	background-image: url("https://www.transparenttextures.com/patterns/vintage-speckles.png");
+	/* This is mostly intended for prototyping; please download the pattern and re-host for production environments. Thank you! */
+}
+
+.key {
+	box-shadow: 0 2px 0 #bbb;
+}
+
+kbd u {
+	text-decoration: none;
+	border-bottom: 0.8px solid #ffffff;
+	padding-bottom: 1px;
+	display: inline-block;
+	line-height: 0.9;
+}
+
+body {
+	background-color: #000000;
+	background-image: url("https://www.transparenttextures.com/patterns/tree-bark.png");
+	/* This is mostly intended for prototyping; please download the pattern and re-host for production environments. Thank you! */
+}
