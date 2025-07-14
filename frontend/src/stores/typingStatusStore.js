@@ -31,6 +31,7 @@ export const useTypingStatusStore = defineStore('typingStatus', () => {
 
       // 🕒 如果是限時模式，且時間到了，就自動結束
       if (practiceMode.value === 'timed' && elapsed.value >= timeLimit.value) {
+        alert('倒數結束－停止輸入！')
         stopTyping()
       }
     }, 1000)
