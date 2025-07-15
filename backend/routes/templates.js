@@ -8,11 +8,6 @@ const BASE_PATH = path.join(__dirname, '../../public/textTemplates')
 console.log('templates.js 目前目錄:', __dirname)
 console.log('BASE_PATH:', BASE_PATH)
 
-// Health check
-router.get('/api/health', (req, res) => {
-	res.send('Backend is running')
-})
-
 // Utility: 取得某資料夾下 en/ch 的 txt 檔案
 function readLangFiles(baseDir) {
 	const result = {}
