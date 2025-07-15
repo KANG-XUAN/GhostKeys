@@ -1,4 +1,4 @@
-# GhostKeys鬼鍵識
+# GhostKeys 鬼鍵識 © 2025
 
 練習盲打，提升打字速度與準確度的趣味工具。
 
@@ -18,9 +18,35 @@ GhostKeys 是一款用 Vue 3 + Pinia 開發的打字練習應用，結合即時�
 
 ## Demo 體驗連結
 
-線上版因瀏覽器限制無法讀取本地檔案，目前僅支援「隨機練習功能」。  
-若欲體驗完整功能，請下載專案至本地執行。  
-🔗 https://kang-xuan.github.io/GhostKeys/
+🔗 https://kang-xuan.github.io/GhostKeys/ <br>
+- 線上版因瀏覽器限制無法讀取本地檔案，目前僅支援「隨機練習功能」。  
+- 若欲體驗完整功能，請下載專案至本地執行。  
+
+---
+
+## 安裝與執行
+
+![GhostKeys 使用示意圖1](docs/images/demoDownload.gif)
+*▲ 下載到本地全過程演示*
+
+<details>
+<summary><strong>🔧 展開查看桌面版clone安裝與啟動流程</strong></summary>
+
+1. 取得專案碼
+```
+git clone https://github.com/KANG-XUAN/GhostKeys.git
+```
+
+2. 安裝依賴(僅需第一次)
+  - 雙擊 `自動_install.bat` 即可自動安裝所需依賴
+
+3. 啟動開發伺服器
+  - 雙擊 `自動_啟動.bat` 自動啟動前後端伺服器視窗
+  - ⚠️ 如果 `自動_啟動` 無法正常出現前後端cmd，那麼請分別使用 `自動_啟動前端.bat` 、 `自動_啟動後端.bat` 即可分開啟動
+
+4. 在瀏覽器開啟
+  - 找到前端啟動視窗（cmd）中顯示的網址，複製貼到瀏覽器開啟
+</details>
 
 ---
 
@@ -34,12 +60,29 @@ GhostKeys 是一款用 Vue 3 + Pinia 開發的打字練習應用，結合即時�
 
 ---
 
+## 使用說明
+
+- 選擇文章後，開始輸入，系統會即時偵測錯誤並計時  
+- 完成後，結算區會顯示你的錯誤數與輸入統計  
+- 點擊中央圓形計時器可以停止計時
+
+![GhostKeys 使用示意圖1](docs/images/legend_1.png)  
+*▲ 圖1：進入網站畫面介紹*
+![GhostKeys 使用示意圖2](docs/images/legend_2.png)  
+*▲ 圖2：隨機練習模式說明*
+![GhostKeys 使用示意圖3](docs/images/legend_3.png)  
+*▲ 圖3：練習途中畫面指引*
+![GhostKeys 使用示意圖4](docs/images/legend_4.png)
+*▲ 圖4：結算畫面效果展現*
+
+---
+
 ## 技術棧
 
 ### 🔹 前端
 - Vue 3 + Composition API  
 - Pinia 狀態管理  
-- SCSS / CSS3  
+- CSS3  
 
 ### 🔹 後端
 - Node.js  
@@ -57,30 +100,6 @@ GhostKeys 是一款用 Vue 3 + Pinia 開發的打字練習應用，結合即時�
 |------|------|------|
 | `/api/templates/list` | GET | 取得所有練習文章檔案清單 |
 | `/api/templates/file?path=xxx&lang=xxx&name=xxx` | GET | 取得單一文章內容（需帶 query：`path`, `lang`, `name`） |
-
----
-
-## 安裝與執行
-
-<details>
-<summary><strong>🔧 展開查看安裝與啟動流程</strong></summary>
-
-1. 取得專案碼
-```
-git clone https://github.com/KANG-XUAN/GhostKeys.git
-cd GhostKeys
-```
-
-2. 安裝依賴(僅需第一次)
-  - 雙擊「自動_install.bat」即可自動安裝所需依賴
-
-3. 啟動開發伺服器
-  - 雙擊「自動_啟動.bat」自動啟動前後端伺服器視窗
-  - ⚠️ 如果"自動_啟動"無法正常出現前後端cmd，那麼請分別使用"自動_啟動前端"、"自動_啟動後端"即可分開啟動
-
-4. 在瀏覽器開啟
-  - 找到前端啟動視窗（cmd）中顯示的網址，複製貼到瀏覽器開啟
-</details>
 
 ---
 
@@ -113,19 +132,6 @@ GhostKeys/
 ```
 
 </details>
-
----
-
-## 使用說明
-
-- 選擇文章後，開始輸入，系統會即時偵測錯誤並計時  
-- 完成後，結算區會顯示你的錯誤數與輸入統計  
-- 點擊中央圓形計時器可以停止計時
-
-![GhostKeys 使用示意圖1](docs/images/legend_1.png)  
-![GhostKeys 使用示意圖2](docs/images/legend_2.png)  
-![GhostKeys 使用示意圖3](docs/images/legend_3.png)  
-![GhostKeys 使用示意圖4](docs/images/legend_4.png)
 
 ---
 
